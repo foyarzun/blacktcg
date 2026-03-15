@@ -19,11 +19,18 @@
 }
 
 .filterItem select, .filterItem input {
-  background: #111;
-  border: 1px solid #333;
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
-  padding: 0.6rem;
-  border-radius: 4px;
+  padding: 0.8rem;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.filterItem select:focus, .filterItem input:focus {
+  border-color: #fff;
+  background: #111;
 }
 
 .colorPills {
