@@ -432,3 +432,34 @@
   font-size: 1.2rem;
   color: #fff;
 }
+
+.btnGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.editBtn {
+  background: none;
+  border: 1px solid #ffd70033;
+  color: #ffd700;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.editBtn:hover {
+  background: #ffd700;
+  color: #000;
+  border-color: #ffd700;
+}
+
+.deleteBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}

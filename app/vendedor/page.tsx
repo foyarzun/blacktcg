@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Header from "@/components/Header/Header";
 import { useAuth } from "@/context/AuthContext";
-import { collection, addDoc, serverTimestamp, query, where, orderBy, limit, getDocs, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, where, orderBy, limit, getDocs, deleteDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { searchCards, TcgSearchResult } from "@/lib/tcgApi";
@@ -155,6 +155,43 @@ export default function VendedorDashboard() {
     setSearchResults([]);
   };
 
+  const handleUpdatePrice = async (id: string, type: string) => {
+    const newPriceStr = prompt("Ingrese el nuevo precio:");
+    if (!newPriceStr) return;
+    const newPrice = parseFloat(newPriceStr);
+    if (isNaN(newPrice)) {
+      alert("Precio inválido.");
+      return;
+    }
+
+    try {
+      if (type.includes("(Sim)")) {
+        const key = type.includes("Subasta") ? "mock_auctions" : "mock_inventory";
+        const items = JSON.parse(localStorage.getItem(key) || "[]");
+        const idx = items.findIndex((it: any) => it.id === id);
+        if (idx !== -1) {
+          items[idx].price = newPrice;
+          if (!items[idx].priceHistory) items[idx].priceHistory = [];
+          items[idx].priceHistory.push({ price: newPrice, date: new Date().toISOString() });
+          localStorage.setItem(key, JSON.stringify(items));
+        }
+      } else {
+        const coll = type === "Subasta" ? "auctions" : "inventory";
+        const docRef = doc(db, coll, id);
+        await updateDoc(docRef, { price: newPrice });
+        // Record in history
+        await addDoc(collection(db, coll, id, "priceHistory"), {
+          price: newPrice,
+          date: serverTimestamp()
+        });
+      }
+      alert("Precio actualizado con éxito.");
+    } catch (error) {
+      console.error("Error updating price:", error);
+      alert("Error al actualizar precio.");
+    }
+  };
+
   const handleDelete = async (id: string, type: string) => {
     if (!confirm("¿Estás seguro de que quieres eliminar esta publicación?")) return;
     
@@ -235,6 +272,9 @@ export default function VendedorDashboard() {
           ...payload,
           id: `local-${Date.now()}`,
           createdAt: new Date().toISOString(),
+          priceHistory: [
+            { price: parseFloat(formData.price), date: new Date().toISOString() }
+          ],
           ...(isAuction ? {
             startPrice: parseFloat(formData.price),
             currentBid: parseFloat(formData.price),
@@ -248,14 +288,24 @@ export default function VendedorDashboard() {
         alert(`¡${isAuction ? "Subasta" : "Venta"} creada con éxito! (Simulación)`);
       } else {
         if (formData.listingType === "auction") {
-          await addDoc(collection(db, "auctions"), {
+          const docRef = await addDoc(collection(db, "auctions"), {
             ...payload,
             startPrice: parseFloat(formData.price),
             currentBid: parseFloat(formData.price),
             endTime: new Date(Date.now() + parseInt(formData.durationHours) * 60 * 60 * 1000),
           });
+          // Add initial price history
+          await addDoc(collection(db, "auctions", docRef.id, "priceHistory"), {
+            price: parseFloat(formData.price),
+            date: serverTimestamp()
+          });
         } else {
-          await addDoc(collection(db, "inventory"), payload);
+          const docRef = await addDoc(collection(db, "inventory"), payload);
+          // Add initial price history
+          await addDoc(collection(db, "inventory", docRef.id, "priceHistory"), {
+            price: parseFloat(formData.price),
+            date: serverTimestamp()
+          });
         }
         alert("¡Publicación creada con éxito!");
       }
@@ -516,14 +566,22 @@ export default function VendedorDashboard() {
                             </td>
                             <td>${listing.price || listing.startPrice}</td>
                             <td>{listing.stock || "-"}</td>
-                            <td>
-                               <button 
-                                 className={styles.deleteBtn}
-                                 onClick={() => handleDelete(listing.id, listing.type)}
-                               >
-                                  <Trash2 size={14} /> Eliminar
-                               </button>
-                            </td>
+                             <td>
+                                <div className={styles.btnGroup}>
+                                   <button 
+                                     className={styles.editBtn}
+                                     onClick={() => handleUpdatePrice(listing.id, listing.type)}
+                                   >
+                                      <Tag size={14} /> Editar
+                                   </button>
+                                   <button 
+                                     className={styles.deleteBtn}
+                                     onClick={() => handleDelete(listing.id, listing.type)}
+                                   >
+                                      <Trash2 size={14} /> Eliminar
+                                   </button>
+                                </div>
+                             </td>
                          </tr>
                       ))}
                    </tbody>

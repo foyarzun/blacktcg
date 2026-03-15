@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/Header/Header";
-import { doc, onSnapshot, updateDoc, increment } from "firebase/firestore";
+import { doc, onSnapshot, updateDoc, addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import { Clock, Hammer, User, ArrowLeft, Trophy, Zap } from "lucide-react";
@@ -103,6 +103,8 @@ function SalaContent() {
                 list[idx].currentBid += amount;
                 list[idx].highestBidder = user.uid;
                 list[idx].highestBidderName = user.displayName;
+                if (!list[idx].priceHistory) list[idx].priceHistory = [];
+                list[idx].priceHistory.push({ price: list[idx].currentBid, date: new Date().toISOString() });
                 localStorage.setItem("mock_auctions", JSON.stringify(list));
                 setAuction({...list[idx]});
             }
@@ -112,10 +114,16 @@ function SalaContent() {
 
     try {
       const auctionRef = doc(db, "auctions", id);
+      const newBid = auction.currentBid + amount;
       await updateDoc(auctionRef, {
-        currentBid: increment(amount),
+        currentBid: newBid,
         highestBidder: user.uid,
         highestBidderName: user.displayName || "Comprador Anónimo",
+      });
+      // Recording history
+      await addDoc(collection(db, "auctions", id, "priceHistory"), {
+        price: newBid,
+        date: serverTimestamp()
       });
     } catch (error) {
       console.error("Error bidding:", error);

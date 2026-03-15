@@ -4,7 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import Header from "@/components/Header/Header";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { useCart } from "@/context/CartContext";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, getDocs, collection } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useSearchParams } from "next/navigation";
 import styles from "./Detail.module.css";
@@ -26,6 +26,7 @@ function DetailContent() {
   const [activeTab, setActiveTab] = useState("vendedores");
   const [card, setCard] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [history, setHistory] = useState<any[]>([]);
 
   useEffect(() => {
     if (!id) return;
@@ -36,7 +37,7 @@ function DetailContent() {
         cardName: data.cardName || data.name || "Carta sin nombre",
         game: data.game || "Desconocido",
         condition: data.condition || data.rarity || "Near Mint",
-        price: data.price || 0,
+        price: data.price || data.currentBid || 0,
         stock: data.stock || 1,
         imageUrl: data.imageUrl || data.image || "https://images.pokemontcg.io/base1/4_hires.png",
         sellerName: data.sellerName || "Vendedor Independiente",
@@ -48,6 +49,26 @@ function DetailContent() {
         language: data.language || "Español",
         rarity: data.rarity || data.condition || "Rara"
       };
+    };
+
+    const fetchHistory = async (coll: string, docId: string) => {
+      try {
+        const histSnap = await getDocs(collection(db, coll, docId, "priceHistory"));
+        const data = histSnap.docs.map(h => {
+          const d = h.data();
+          const date = d.date?.toDate ? d.date.toDate() : new Date(d.date);
+          return {
+            date: date.toLocaleDateString('es-CL', { day: '2-digit', month: 'short' }),
+            fullDate: date,
+            price: d.price
+          };
+        });
+        // Sort by actual date
+        data.sort((a, b) => a.fullDate.getTime() - b.fullDate.getTime());
+        return data;
+      } catch (e) {
+        return [];
+      }
     };
 
     const fetchCard = async () => {
@@ -65,18 +86,43 @@ function DetailContent() {
         
         const foundH = hardcodedMocks.find(m => String(m.id) === targetId);
         if (foundH) {
-          setCard(normalizeCard(foundH, targetId));
+          const c = normalizeCard(foundH, targetId);
+          setCard(c);
+          setHistory([{ date: "Hoy", price: c.price }]);
           setLoading(false);
           return;
         }
 
-        // 2. Firestore Inventory
-        const docRef = doc(db, "inventory", targetId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setCard(normalizeCard(docSnap.data(), docSnap.id));
-          setLoading(false);
-          return;
+        // 2. Firestore Inventory & Auctions
+        const collections = ["inventory", "auctions"];
+        for (const col of collections) {
+          const docRef = doc(db, col, targetId);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            const c = normalizeCard(data, docSnap.id);
+            setCard(c);
+            const h = await fetchHistory(col, targetId);
+            if (h.length === 0) {
+              const weekAgo = new Date();
+              weekAgo.setDate(weekAgo.getDate() - 7);
+              setHistory([
+                { date: weekAgo.toLocaleDateString('es-CL', { day: '2-digit', month: 'short' }), price: c.price },
+                { date: "Hoy", price: c.price }
+              ]);
+            } else if (h.length === 1) {
+              const weekAgo = new Date();
+              weekAgo.setDate(weekAgo.getDate() - 7);
+              setHistory([
+                { date: weekAgo.toLocaleDateString('es-CL', { day: '2-digit', month: 'short' }), price: h[0].price },
+                ...h
+              ]);
+            } else {
+              setHistory(h);
+            }
+            setLoading(false);
+            return;
+          }
         }
 
         // 3. LocalStorage
@@ -87,7 +133,17 @@ function DetailContent() {
             const items = JSON.parse(saved);
             const found = items.find((i: any) => String(i.id) === targetId);
             if (found) {
-              setCard(normalizeCard(found, targetId));
+              const c = normalizeCard(found, targetId);
+              setCard(c);
+              if (found.priceHistory) {
+                const h = found.priceHistory.map((hp: any) => ({
+                  date: new Date(hp.date).toLocaleDateString('es-CL', { day: '2-digit', month: 'short' }),
+                  price: hp.price
+                }));
+                setHistory(h);
+              } else {
+                setHistory([{ date: "Hoy", price: c.price }]);
+              }
               setLoading(false);
               return;
             }
@@ -184,7 +240,7 @@ function DetailContent() {
           {activeTab === "grafico" ? (
             <div className={styles.chartContainer}>
               <ResponsiveContainer width="100%" height={400}>
-                <AreaChart data={MOCK_HISTORICAL_DATA}>
+                <AreaChart data={history}>
                   <defs>
                     <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#ffd700" stopOpacity={0.3}/>
