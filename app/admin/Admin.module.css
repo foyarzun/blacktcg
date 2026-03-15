@@ -1,0 +1,220 @@
+.main {
+  min-height: 100vh;
+  background-color: #0a0a0a;
+  color: #fff;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #fff, #ffd700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: #111;
+  border: 1px solid #222;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.settingGroup {
+  border-top: 1px solid #1a1a1a;
+  padding-top: 2rem;
+}
+
+.setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.settingInfo h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.settingInfo p {
+  margin: 0.3rem 0 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.btnOn {
+  background: #ffd700;
+  color: #000;
+  border: none;
+  min-width: 120px;
+  padding: 0.8rem;
+  font-weight: 900;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnOff {
+  background: #222;
+  color: #555;
+  border: 1px solid #333;
+  min-width: 120px;
+  padding: 0.8rem;
+  font-weight: 900;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.hint {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: #444;
+  text-align: center;
+}
+
+/* User Table Stats */
+.sectionTitle {
+  font-size: 1.2rem;
+  color: #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.tableWrapper {
+  margin-top: 2rem;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 1rem;
+  color: #666;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid #222;
+}
+
+.table td {
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid #1a1a1a;
+  font-size: 0.95rem;
+}
+
+.userCell {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-weight: 700;
+  color: #fff;
+}
+
+.userEmail {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.roleBadge {
+  background: #222;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #ffd700;
+  text-transform: uppercase;
+}
+
+.volume {
+  font-weight: 900;
+  color: #00ff00;
+  font-family: monospace;
+}
+
+.topSeller {
+  background: rgba(255, 215, 0, 0.03);
+}
+
+.topSeller td:first-child::before {
+  content: "🏆";
+  margin-right: 0.5rem;
+}
+
+.auctionCell {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardName {
+  font-weight: 700;
+  color: #fff;
+}
+
+.gameName {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.btnGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btnApprove {
+  background: #ffd700;
+  color: #000;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnApprove:hover {
+  background: #fff;
+}
+
+.btnReject {
+  background: #222;
+  color: #ff4444;
+  border: 1px solid #333;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.btnReject:hover {
+  background: #ff4444;
+  color: #fff;
+}
+
+.emptyMsg {
+  text-align: center;
+  padding: 2rem;
+  color: #444;
+  font-style: italic;
+}

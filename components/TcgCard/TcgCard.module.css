@@ -1,0 +1,119 @@
+.perspective {
+  perspective: 1000px;
+  width: 280px;
+  height: 400px;
+  cursor: pointer;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.1s ease-out;
+  transform-style: preserve-3d;
+  background: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 80%;
+  overflow: hidden;
+  background: #000;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Base holographic effect layer */
+.shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  transition: opacity 0.3s ease;
+}
+
+/* Complex holographic rainbow/foil layer */
+.foil {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(110deg, 
+      transparent 25%, 
+      rgba(255, 0, 0, 0.2) 35%, 
+      rgba(255, 255, 0, 0.2) 45%, 
+      rgba(0, 255, 0, 0.2) 55%, 
+      rgba(0, 255, 255, 0.2) 65%, 
+      rgba(0, 0, 255, 0.2) 75%, 
+      rgba(255, 0, 255, 0.2) 85%, 
+      transparent 95%
+    );
+  background-size: 200% 200%;
+  mix-blend-mode: color-dodge;
+  transition: opacity 0.3s ease;
+  filter: brightness(1.2) contrast(1.2);
+}
+
+.cardInfo {
+  padding: 1rem;
+  background: linear-gradient(0deg, #111 0%, #222 100%);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cardName {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.rarity {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Hover effect for the card container */
+.perspective:hover .card {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.1);
+}

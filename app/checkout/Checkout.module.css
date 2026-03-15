@@ -1,0 +1,189 @@
+.main {
+  min-height: 100vh;
+  background-color: #050505;
+  color: #fff;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 3rem;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 4rem;
+}
+
+.cartList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cartItem {
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.itemName {
+  font-size: 1.2rem;
+  margin-bottom: 0.2rem;
+  display: block;
+}
+
+.itemSub {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.itemPrice {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.itemPriceValue {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  color: #ff4d4d;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.summary {
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  padding: 2.5rem;
+  border-radius: 12px;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.summaryTitle {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2rem;
+  color: #888;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  color: #aaa;
+}
+
+.totalRowMain {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 1.5rem 0;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #222;
+  margin: 1rem 0;
+}
+
+.payBtn {
+  width: 100%;
+  background: #ffd700;
+  color: #000;
+  border: none;
+  padding: 1.2rem;
+  border-radius: 8px;
+  font-weight: 900;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+.payBtn:hover:not(:disabled) {
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+.payBtn:disabled {
+  background: #333;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.badges {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 0.75rem;
+  color: #555;
+}
+
+.badges span {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.successContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.successCard {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.successTitle {
+  font-size: 2.5rem;
+  font-weight: 900;
+}
+
+.successMsg {
+  color: #aaa;
+}
+
+.backBtn {
+  background: #222;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 0.8rem 2rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+}

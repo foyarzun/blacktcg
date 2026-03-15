@@ -1,0 +1,264 @@
+.main {
+  min-height: 100vh;
+  background-color: #050505;
+  color: #fff;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  transition: color 0.3s ease;
+}
+
+.backBtn:hover {
+  color: #fff;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.cardArea {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  background: radial-gradient(circle at center, #111 0%, transparent 70%);
+}
+
+.cardContainer {
+  position: relative;
+  width: 350px;
+  height: 488px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+  transition: transform 0.1s ease-out;
+  transform-style: preserve-3d;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.biddingArea {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.badge {
+  background: #ff0000;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+
+.seller {
+  color: #666;
+}
+
+.statusGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.statusCard {
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon {
+  color: #ff4d4d;
+}
+
+.iconGold {
+  color: #ffd700;
+}
+
+.label {
+  display: block;
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.time {
+  font-size: 1.5rem;
+  font-family: 'Courier New', Courier, monospace;
+  color: #ffd700;
+}
+
+.expired {
+  color: #ff4d4d;
+}
+
+.price {
+  font-size: 1.5rem;
+  color: #fff;
+  font-weight: 800;
+}
+
+.bidHistory {
+  background: #0d0d0d;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 4px solid #ffd700;
+}
+
+.bidHistory h3 {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.leaderInfo strong {
+  font-size: 1.1rem;
+  display: block;
+}
+
+.leaderInfo span {
+  font-size: 0.8rem;
+  color: #00ff00;
+}
+
+.noBids {
+  color: #444;
+  font-style: italic;
+}
+
+.actionPanel {
+  background: #111;
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid #222;
+}
+
+.bidHint {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.bidButtons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.bidBtn {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 100px;
+}
+
+.bidBtn:hover {
+  background: #333;
+  border-color: #ffd700;
+}
+
+.primaryBid {
+  background: #ffd700;
+  color: #000;
+  border: none;
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 900;
+}
+
+.primaryBid:hover {
+  background: #fff;
+  transform: scale(1.02);
+}
+
+.primaryBid:disabled {
+  background: #333;
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.securityText {
+  font-size: 0.7rem;
+  color: #444;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.loading, .error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  font-size: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .cardContainer {
+    width: 280px;
+    height: 390px;
+  }
+}

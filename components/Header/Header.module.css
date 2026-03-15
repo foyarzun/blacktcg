@@ -1,0 +1,197 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 2rem;
+  color: #fff;
+}
+
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  object-fit: contain;
+}
+
+.menu {
+  display: flex;
+  gap: 2rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #ccc;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.menu a:hover {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.auctionLink {
+  color: #ffd700 !important;
+  font-weight: 800;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.auth {
+  display: flex;
+  align-items: center;
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.userName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.roleBadge {
+  font-size: 0.7rem;
+  background: #333;
+  color: #fff;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.2rem;
+  border: 1px solid #444;
+}
+
+.roleBadge:hover {
+  transform: translateY(-1px);
+  background: #444;
+}
+
+.adminBadge {
+  background: #ffd700;
+  color: #000;
+  border-color: #ffd700;
+}
+
+.adminBadge:hover {
+  background: #fff;
+}
+
+.logoutBtn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #666;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logoutBtn:hover {
+  color: #fff;
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+}
+
+.loginBtn {
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.loginBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.cartIcon {
+  position: relative;
+  color: #888;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.cartIcon:hover {
+  color: #fff;
+}
+
+.cartCount {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff4d4d;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.authBtn {
+  background: linear-gradient(135deg, #333, #000);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.authBtn:hover {
+  background: #fff;
+  color: #000;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}

@@ -1,0 +1,70 @@
+.main {
+  min-height: 100vh;
+  background-color: #050505;
+  color: #fff;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.header {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.header p {
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 5rem 0;
+  color: #444;
+}
+
+.empty h3 {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.auctionCard {
+  background: #111;
+  border: 1px solid #222;
+  padding: 2rem;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.auctionCard:hover {
+  transform: translateY(-5px);
+  border-color: #ffd700;
+}
+
+.auctionCard h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.bidInfo {
+  font-size: 1.1rem;
+  color: #ffd700;
+  font-weight: 700;
+}
