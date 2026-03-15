@@ -35,7 +35,7 @@ export default function Home() {
         </video>
         <div className={styles.heroOverlay}></div>
         <div className={styles.heroContent}>
-          <h1 className={styles.title}>BLACKC <TCG></TCG></h1>
+          <h1 className={styles.title}>BLACK TCG</h1>
           <p className={styles.subtitle}>El destino premium para coleccionistas de TCG.</p>
           <div className={styles.ctaGroup}>
             <Link href="/explora" className={styles.primaryBtn}>Explorar Colecciones</Link>
