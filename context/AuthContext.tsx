@@ -136,6 +136,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       await signOut(auth);
       localStorage.removeItem("mock_user_data");
+      window.location.href = "/";
     } catch (error) {
       console.error("Logout failed:", error);
     }
