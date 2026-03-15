@@ -49,13 +49,12 @@ export default function Header() {
       <nav className={styles.nav}>
         <Link href="/" className={styles.logoContainer}>
           <Image
-            src="/logo.png"
-            alt="Blackcards Logo"
-            width={40}
+            src="/logo_home.png"
+            alt="Black TCG Logo"
+            width={120}
             height={40}
             className={styles.logo}
           />
-          <span className={styles.brand}>BLACK TCG</span>
         </Link>
 
         <div className={styles.menu}>
