@@ -48,6 +48,23 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isSignedIn();
       allow update: if isSignedIn() || isAdmin();
+      allow delete: if isAdmin() || (isSignedIn() && request.auth.uid == resource.data.sellerId);
+
+      // Price History Subcollection
+      match /priceHistory/{historyId} {
+        allow read: if true;
+        allow create: if isSignedIn();
+        allow delete: if isAdmin();
+      }
+    }
+
+    // Inventory Price History
+    match /inventory/{listingId} {
+      match /priceHistory/{historyId} {
+        allow read: if true;
+        allow create: if isSignedIn();
+        allow delete: if isAdmin();
+      }
     }
 
     // Sales and Orders

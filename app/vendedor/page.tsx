@@ -220,6 +220,7 @@ export default function VendedorDashboard() {
       const updatedListings = myListings.filter(l => l.id !== id);
       setMyListings(updatedListings);
     } catch (error) {
+      console.error("Error deleting listing:", error);
       alert("Error al eliminar.");
     }
   };
