@@ -79,7 +79,7 @@ const TcgCard: React.FC<Props> = ({ card }) => {
             <h3 className={styles.cardName}>{card.name}</h3>
             <div className={styles.cardFooter}>
               <span className={styles.rarity}>{card.rarity}</span>
-              <span className={styles.price}>${card.price.toFixed(2)}</span>
+              <span className={styles.price}>${card.price.toLocaleString('es-CL')}</span>
             </div>
           </div>
         </div>

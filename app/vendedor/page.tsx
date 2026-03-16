@@ -32,6 +32,8 @@ export default function VendedorDashboard() {
   const [recentSales, setRecentSales] = useState<any[]>([]);
   const [myListings, setMyListings] = useState<any[]>([]);
   const [auctionsEnabled, setAuctionsEnabled] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingType, setEditingType] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     cardName: "",
@@ -157,41 +159,47 @@ export default function VendedorDashboard() {
     setSearchResults([]);
   };
 
-  const handleUpdatePrice = async (id: string, type: string) => {
-    const newPriceStr = prompt("Ingrese el nuevo precio:");
-    if (!newPriceStr) return;
-    const newPrice = parseFloat(newPriceStr);
-    if (isNaN(newPrice)) {
-      alert("Precio inválido.");
-      return;
-    }
+  const handleStartEdit = (listing: any) => {
+    setEditingId(listing.id);
+    setEditingType(listing.type);
+    setFormData({
+      cardName: listing.cardName,
+      game: listing.game,
+      price: (listing.price || listing.startPrice).toString(),
+      stock: (listing.stock || "1").toString(),
+      condition: listing.condition,
+      listingType: listing.type.includes("Subasta") ? "auction" : "direct",
+      durationHours: listing.durationHours || "24",
+      imageUrl: listing.imageUrl,
+      language: listing.language || "Español",
+      finish: listing.finish || "Normal",
+    });
+    setSelectedCard({
+      id: listing.id,
+      name: listing.cardName,
+      image: listing.imageUrl,
+      game: listing.game
+    });
+    setActiveTab("dashboard");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-    try {
-      if (type.includes("(Sim)")) {
-        const key = type.includes("Subasta") ? "mock_auctions" : "mock_inventory";
-        const items = JSON.parse(localStorage.getItem(key) || "[]");
-        const idx = items.findIndex((it: any) => it.id === id);
-        if (idx !== -1) {
-          items[idx].price = newPrice;
-          if (!items[idx].priceHistory) items[idx].priceHistory = [];
-          items[idx].priceHistory.push({ price: newPrice, date: new Date().toISOString() });
-          localStorage.setItem(key, JSON.stringify(items));
-        }
-      } else {
-        const coll = type === "Subasta" ? "auctions" : "inventory";
-        const docRef = doc(db, coll, id);
-        await updateDoc(docRef, { price: newPrice });
-        // Record in history
-        await addDoc(collection(db, coll, id, "priceHistory"), {
-          price: newPrice,
-          date: serverTimestamp()
-        });
-      }
-      alert("Precio actualizado con éxito.");
-    } catch (error) {
-      console.error("Error updating price:", error);
-      alert("Error al actualizar precio.");
-    }
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditingType(null);
+    setFormData({
+      cardName: "",
+      game: "pokemon",
+      price: "",
+      stock: "1",
+      condition: "Near Mint",
+      listingType: "direct",
+      durationHours: "24",
+      imageUrl: "",
+      language: "Español",
+      finish: "Normal",
+    });
+    setSelectedCard(null);
   };
 
   const handleDelete = async (id: string, type: string) => {
@@ -249,11 +257,12 @@ export default function VendedorDashboard() {
     }
     setLoading(true);
     try {
+      const parsedPrice = Math.round(parseFloat(formData.price) || 0);
       const payload = {
         cardName: formData.cardName,
         game: formData.game,
-        price: parseFloat(formData.price),
-        stock: parseInt(formData.stock),
+        price: parsedPrice,
+        stock: parseInt(formData.stock) || 1,
         condition: formData.condition,
         language: formData.language,
         finish: formData.finish,
@@ -267,54 +276,94 @@ export default function VendedorDashboard() {
         status: "active",
       };
 
-      if (user.uid === "mock-user-123") {
-        const isAuction = formData.listingType === "auction";
-        const storageKey = isAuction ? "mock_auctions" : "mock_inventory";
-        
-        const list = JSON.parse(localStorage.getItem(storageKey) || "[]");
-        const newItem = {
-          ...payload,
-          id: `local-${Date.now()}`,
-          createdAt: new Date().toISOString(),
-          priceHistory: [
-            { price: parseFloat(formData.price), date: new Date().toISOString() }
-          ],
-          ...(isAuction ? {
-            startPrice: parseFloat(formData.price),
-            currentBid: parseFloat(formData.price),
-            endTime: new Date(Date.now() + parseInt(formData.durationHours) * 60 * 60 * 1000).toISOString(),
-            isAuction: true
-          } : {})
-        };
-        
-        list.push(newItem);
-        localStorage.setItem(storageKey, JSON.stringify(list));
-        alert(`¡${isAuction ? "Subasta" : "Venta"} creada con éxito! (Simulación)`);
-      } else {
-        if (formData.listingType === "auction") {
-          const docRef = await addDoc(collection(db, "auctions"), {
-            ...payload,
-            startPrice: parseFloat(formData.price),
-            currentBid: parseFloat(formData.price),
-            endTime: new Date(Date.now() + parseInt(formData.durationHours) * 60 * 60 * 1000),
-          });
-          // Add initial price history
-          await addDoc(collection(db, "auctions", docRef.id, "priceHistory"), {
-            price: parseFloat(formData.price),
-            date: serverTimestamp()
-          });
+      if (editingId) {
+        // Update Logic
+        if (editingType?.includes("(Sim)")) {
+          const key = editingType.includes("Subasta") ? "mock_auctions" : "mock_inventory";
+          const items = JSON.parse(localStorage.getItem(key) || "[]");
+          const idx = items.findIndex((it: any) => it.id === editingId);
+          if (idx !== -1) {
+            items[idx] = { 
+              ...items[idx], 
+              ...payload, 
+              createdAt: items[idx].createdAt,
+              price: parsedPrice,
+              startPrice: editingType.includes("Subasta") ? parsedPrice : undefined
+            };
+            if (!items[idx].priceHistory) items[idx].priceHistory = [];
+            items[idx].priceHistory.push({ price: parsedPrice, date: new Date().toISOString() });
+            localStorage.setItem(key, JSON.stringify(items));
+          }
         } else {
-          const docRef = await addDoc(collection(db, "inventory"), payload);
-          // Add initial price history
-          await addDoc(collection(db, "inventory", docRef.id, "priceHistory"), {
-            price: parseFloat(formData.price),
+          const coll = editingType === "Subasta" ? "auctions" : "inventory";
+          const docRef = doc(db, coll, editingId);
+          const updatePayload: any = { ...payload };
+          delete updatePayload.createdAt; // Don't overwrite original date
+          
+          if (editingType === "Subasta") {
+             updatePayload.startPrice = parsedPrice;
+          }
+          
+          await updateDoc(docRef, updatePayload);
+          // Record history only if price changed
+          await addDoc(collection(db, coll, editingId, "priceHistory"), {
+            price: parsedPrice,
             date: serverTimestamp()
           });
         }
-        alert("¡Publicación creada con éxito!");
+        alert("¡Publicación actualizada con éxito!");
+        handleCancelEdit();
+      } else {
+        // Create Logic
+        if (user.uid === "mock-user-123") {
+          const isAuction = formData.listingType === "auction";
+          const storageKey = isAuction ? "mock_auctions" : "mock_inventory";
+          
+          const list = JSON.parse(localStorage.getItem(storageKey) || "[]");
+          const newItem = {
+            ...payload,
+            id: `local-${Date.now()}`,
+            createdAt: new Date().toISOString(),
+            priceHistory: [
+              { price: parsedPrice, date: new Date().toISOString() }
+            ],
+            ...(isAuction ? {
+              startPrice: parsedPrice,
+              currentBid: parsedPrice,
+              endTime: new Date(Date.now() + parseInt(formData.durationHours) * 60 * 60 * 1000).toISOString(),
+              isAuction: true
+            } : {})
+          };
+          
+          list.push(newItem);
+          localStorage.setItem(storageKey, JSON.stringify(list));
+          alert(`¡${isAuction ? "Subasta" : "Venta"} creada con éxito! (Simulación)`);
+        } else {
+          if (formData.listingType === "auction") {
+            const docRef = await addDoc(collection(db, "auctions"), {
+              ...payload,
+              startPrice: parsedPrice,
+              currentBid: parsedPrice,
+              endTime: new Date(Date.now() + parseInt(formData.durationHours) * 60 * 60 * 1000),
+            });
+            // Add initial price history
+            await addDoc(collection(db, "auctions", docRef.id, "priceHistory"), {
+              price: parsedPrice,
+              date: serverTimestamp()
+            });
+          } else {
+            const docRef = await addDoc(collection(db, "inventory"), payload);
+            // Add initial price history
+            await addDoc(collection(db, "inventory", docRef.id, "priceHistory"), {
+              price: parsedPrice,
+              date: serverTimestamp()
+            });
+          }
+          alert("¡Publicación creada con éxito!");
+        }
+        setFormData({ cardName: "", game: "pokemon", price: "", stock: "1", condition: "Near Mint", listingType: "direct", durationHours: "24", imageUrl: "", language: "Español", finish: "Normal" });
+        setSelectedCard(null);
       }
-      setFormData({ cardName: "", game: "pokemon", price: "", stock: "1", condition: "Near Mint", listingType: "direct", durationHours: "24", imageUrl: "", language: "Español", finish: "Normal" });
-      setSelectedCard(null);
     } catch (error) {
       console.error("Error creation:", error);
     } finally {
@@ -391,7 +440,7 @@ export default function VendedorDashboard() {
                 </div>
               ) : (
                 <>
-                  <h3 className={styles.cardTitle}>Nueva Publicación</h3>
+                  <h3 className={styles.cardTitle}>{editingId ? "Editar Publicación" : "Nueva Publicación"}</h3>
                   <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.row}>
                       <div className={styles.formGroup}>
@@ -520,16 +569,17 @@ export default function VendedorDashboard() {
 
                     <div className={styles.row}>
                       <div className={styles.formGroup}>
-                        <label className={styles.label}>Precio ($)</label>
+                        <label className={styles.label}>Precio (CLP)</label>
                         <input 
                           className={styles.input}
                           type="number"
                           value={formData.price}
                           onChange={(e) => setFormData({...formData, price: e.target.value})}
-                          placeholder="0.00"
+                          placeholder="0"
+                          step="1"
                         />
                       </div>
-                      {formData.listingType === "auction" && (
+                      {(formData.listingType === "auction" || editingType === "Subasta") && (
                         <div className={styles.formGroup}>
                           <label className={styles.label}>Duración (Horas)</label>
                           <select 
@@ -546,9 +596,16 @@ export default function VendedorDashboard() {
                       )}
                     </div>
 
-                    <button type="submit" className={styles.submitBtn} disabled={loading || !selectedCard}>
-                      {loading ? "Publicando..." : "Publicar Ahora"}
-                    </button>
+                    <div className={styles.btnGroup}>
+                      <button type="submit" className={styles.submitBtn} disabled={loading || !selectedCard} style={{ flex: 2 }}>
+                        {loading ? "Procesando..." : (editingId ? "Actualizar Publicación" : "Publicar Ahora")}
+                      </button>
+                      {editingId && (
+                        <button type="button" className={styles.deleteBtn} onClick={handleCancelEdit} style={{ flex: 1, marginTop: '1rem', justifyContent: 'center' }}>
+                          Cancelar
+                        </button>
+                      )}
+                    </div>
                   </form>
                 </>
               )}
@@ -635,7 +692,7 @@ export default function VendedorDashboard() {
                                 <div className={styles.btnGroup}>
                                    <button 
                                      className={styles.editBtn}
-                                     onClick={() => handleUpdatePrice(listing.id, listing.type)}
+                                     onClick={() => handleStartEdit(listing)}
                                    >
                                       <Tag size={14} /> Editar
                                    </button>

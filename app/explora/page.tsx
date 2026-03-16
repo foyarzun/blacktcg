@@ -54,9 +54,9 @@ import { collection, onSnapshot, query, where, doc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
 const COMUNAS_CHILE = [
-  "Santiago", "Las Condes", "Providencia", "Viña del Mar", "Valparaíso", 
-  "Concepción", "Antofagasta", "La Serena", "Temuco", "Puerto Montt",
-  "Rancagua", "Talca", "Arica", "Iquique", "Chillán", "Puente Alto", "Maipú"
+  "Santiago", "Las Condes", "Providencia", "Viña del Mar", "Valparaíso",
+  "Concepción", "Antofagasta", "La Serena", "Temuco", "Puerto Montt", "Puerto Varas",
+  "Rancagua", "Talca", "Arica", "Iquique", "Chillán", "Puente Alto", "Maipú", "La Florida"
 ].sort();
 
 export default function ExploraPage() {
