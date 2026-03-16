@@ -46,6 +46,8 @@ export default function VendedorDashboard() {
     imageUrl: "",
     language: "Español",
     finish: "Normal",
+    cardNumber: "",
+    expansion: "",
   });
 
   // Real-time synchronization
@@ -154,6 +156,8 @@ export default function VendedorDashboard() {
       ...formData,
       cardName: card.name,
       imageUrl: card.image,
+      cardNumber: card.id,
+      expansion: card.set || "",
     });
     setSearchQuery("");
     setSearchResults([]);
@@ -173,6 +177,8 @@ export default function VendedorDashboard() {
       imageUrl: listing.imageUrl,
       language: listing.language || "Español",
       finish: listing.finish || "Normal",
+      cardNumber: listing.cardNumber || "",
+      expansion: listing.expansion || "",
     });
     setSelectedCard({
       id: listing.id,
@@ -198,6 +204,8 @@ export default function VendedorDashboard() {
       imageUrl: "",
       language: "Español",
       finish: "Normal",
+      cardNumber: "",
+      expansion: "",
     });
     setSelectedCard(null);
   };
@@ -268,6 +276,8 @@ export default function VendedorDashboard() {
         language: formData.language,
         finish: formData.finish,
         imageUrl: formData.imageUrl,
+        cardNumber: formData.cardNumber,
+        expansion: formData.expansion,
         sellerId: user.uid,
         sellerName: (userData?.nombre && userData?.apellido) 
           ? `${userData.nombre} ${userData.apellido}` 
@@ -362,7 +372,7 @@ export default function VendedorDashboard() {
           }
           alert("¡Publicación creada con éxito!");
         }
-        setFormData({ cardName: "", game: "pokemon", price: "", stock: "1", condition: "Near Mint", listingType: "direct", durationHours: "24", imageUrl: "", language: "Español", finish: "Normal" });
+        setFormData({ cardName: "", game: "pokemon", price: "", stock: "1", condition: "Near Mint", listingType: "direct", durationHours: "24", imageUrl: "", language: "Español", finish: "Normal", cardNumber: "", expansion: "" });
         setSelectedCard(null);
       }
     } catch (error) {

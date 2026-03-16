@@ -56,20 +56,23 @@ export const searchCards = async (game: string, query: string): Promise<TcgSearc
       }
 
       case "onepiece": {
-        // One Piece API - using a reliable community source if possible
-        // Fallback to a mock or a known stable endpoint
         try {
-          const response = await fetch(`https://api.optcgapi.com/v1/cards?name=${encodeURIComponent(query)}`);
+          const response = await fetch(`https://www.optcgapi.com/api/sets/filtered/?card_name=${encodeURIComponent(query)}`);
           if (!response.ok) throw new Error("API fail");
           const data = await response.json();
-          return data.slice(0, 10).map((card: any) => ({
-            id: card.id || card.card_number,
-            name: card.name,
-            image: card.image_url,
-            set: card.set_name,
+          // The API returns a list or an object with results
+          const results = Array.isArray(data) ? data : (data.results || []);
+          
+          return results.slice(0, 10).map((card: any) => ({
+            id: card.card_set_id || card.card_id || Math.random().toString(),
+            name: card.card_name || "Desconocida",
+            image: card.card_image || card.image_url || "",
+            set: card.set_name || card.card_set_id?.split("-")[0],
+            rarity: card.rarity,
             game: "onepiece"
           }));
         } catch (e) {
+          console.error("One Piece Search Error:", e);
           return [];
         }
       }
