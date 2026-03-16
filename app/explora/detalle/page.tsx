@@ -47,6 +47,7 @@ function DetailContent() {
         expansion: data.set || data.expansion || "Colección Base",
         cardNumber: data.number || data.cardNumber || "S/N",
         language: data.language || "Español",
+        finish: data.finish || "Normal",
         rarity: data.rarity || data.condition || "Rara"
       };
     };
@@ -274,6 +275,7 @@ function DetailContent() {
             <div className={styles.attribute}><span>Rareza</span><strong>{card.rarity}</strong></div>
             <div className={styles.attribute}><span>Expansión</span><strong>{card.expansion}</strong></div>
             <div className={styles.attribute}><span>Idioma</span><strong>{card.language}</strong></div>
+            <div className={styles.attribute}><span>Acabado</span><strong>{card.finish}</strong></div>
           </div>
         </div>
       </div>

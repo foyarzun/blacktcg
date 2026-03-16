@@ -22,6 +22,8 @@ export interface TcgCard {
     region?: string;
     attack?: number;
     health?: number;
+    language?: string;
+    finish?: string;
   };
 }
 
@@ -32,5 +34,7 @@ export interface SellerListing {
   sellerCity: string;
   price: number;
   condition: string;
+  language?: string;
+  finish?: string;
   proximity?: number; // Calculated field
 }

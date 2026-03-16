@@ -69,12 +69,12 @@ export default function Header() {
             <>
               <Link href="/vendedor">Mi Panel</Link>
               <Link href="/perfil">Mi Perfil</Link>
-              <Link href="/explora">Comprar</Link>
+              <Link href="/explora">Explorar</Link>
               {auctionsEnabled && <Link href="/subastas" className={styles.auctionLink}>Subastas</Link>}
             </>
           ) : (
             <>
-              <Link href="/explora">Explora</Link>
+              <Link href="/explora">Explorar</Link>
               {auctionsEnabled && <Link href="/subastas" className={styles.auctionLink}>Subastas</Link>}
             </>
           )}

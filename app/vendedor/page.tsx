@@ -42,6 +42,8 @@ export default function VendedorDashboard() {
     listingType: "direct",
     durationHours: "24",
     imageUrl: "",
+    language: "Español",
+    finish: "Normal",
   });
 
   // Real-time synchronization
@@ -253,6 +255,8 @@ export default function VendedorDashboard() {
         price: parseFloat(formData.price),
         stock: parseInt(formData.stock),
         condition: formData.condition,
+        language: formData.language,
+        finish: formData.finish,
         imageUrl: formData.imageUrl,
         sellerId: user.uid,
         sellerName: (userData?.nombre && userData?.apellido) 
@@ -309,7 +313,7 @@ export default function VendedorDashboard() {
         }
         alert("¡Publicación creada con éxito!");
       }
-      setFormData({ cardName: "", game: "pokemon", price: "", stock: "1", condition: "Near Mint", listingType: "direct", durationHours: "24", imageUrl: "" });
+      setFormData({ cardName: "", game: "pokemon", price: "", stock: "1", condition: "Near Mint", listingType: "direct", durationHours: "24", imageUrl: "", language: "Español", finish: "Normal" });
       setSelectedCard(null);
     } catch (error) {
       console.error("Error creation:", error);
@@ -402,10 +406,10 @@ export default function VendedorDashboard() {
                           }}
                         >
                           <option value="pokemon">Pokémon</option>
-                          <option value="mtg">MTG</option>
+                          <option value="mtg">Magic: The Gathering</option>
                           <option value="yugioh">Yu-Gi-Oh!</option>
                           <option value="onepiece">One Piece</option>
-                          <option value="lor">LoR</option>
+                          <option value="lor">Legends of Runeterra</option>
                         </select>
                       </div>
                       <div className={styles.formGroup}>
@@ -466,11 +470,55 @@ export default function VendedorDashboard() {
                           value={formData.condition}
                           onChange={(e) => setFormData({...formData, condition: e.target.value})}
                         >
-                          <option value="Mint">Mint</option>
-                          <option value="Near Mint">Near Mint</option>
-                          <option value="Played">Played</option>
+                          <option value="Mint">Impecable (Mint)</option>
+                          <option value="Near Mint">Casi Nueva (NM)</option>
+                          <option value="Played">Usada (Played)</option>
+                          <option value="Damaged">Dañada</option>
                         </select>
                       </div>
+                      <div className={styles.formGroup}>
+                        <label className={styles.label}>Stock</label>
+                        <input 
+                          className={styles.input}
+                          type="number"
+                          value={formData.stock}
+                          onChange={(e) => setFormData({...formData, stock: e.target.value})}
+                          min="1"
+                        />
+                      </div>
+                    </div>
+
+                    <div className={styles.row}>
+                      <div className={styles.formGroup}>
+                        <label className={styles.label}>Idioma</label>
+                        <select 
+                          className={styles.select}
+                          value={formData.language}
+                          onChange={(e) => setFormData({...formData, language: e.target.value})}
+                        >
+                          <option value="Español">Español</option>
+                          <option value="Inglés">Inglés</option>
+                          <option value="Japonés">Japonés</option>
+                          <option value="Portugués">Portugués</option>
+                          <option value="Chino">Chino</option>
+                        </select>
+                      </div>
+                      <div className={styles.formGroup}>
+                        <label className={styles.label}>Acabado</label>
+                        <select 
+                          className={styles.select}
+                          value={formData.finish}
+                          onChange={(e) => setFormData({...formData, finish: e.target.value})}
+                        >
+                          <option value="Normal">Normal</option>
+                          <option value="Foil">Foil / Holo</option>
+                          <option value="Reverse Foil">Reverse Foil</option>
+                          <option value="Full Art">Full Art / Alt Art</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className={styles.row}>
                       <div className={styles.formGroup}>
                         <label className={styles.label}>Precio ($)</label>
                         <input 
@@ -481,6 +529,21 @@ export default function VendedorDashboard() {
                           placeholder="0.00"
                         />
                       </div>
+                      {formData.listingType === "auction" && (
+                        <div className={styles.formGroup}>
+                          <label className={styles.label}>Duración (Horas)</label>
+                          <select 
+                            className={styles.select}
+                            value={formData.durationHours}
+                            onChange={(e) => setFormData({...formData, durationHours: e.target.value})}
+                          >
+                            <option value="12">12 Horas</option>
+                            <option value="24">24 Horas</option>
+                            <option value="48">48 Horas</option>
+                            <option value="72">72 Horas</option>
+                          </select>
+                        </div>
+                      )}
                     </div>
 
                     <button type="submit" className={styles.submitBtn} disabled={loading || !selectedCard}>
@@ -557,7 +620,9 @@ export default function VendedorDashboard() {
                             </td>
                             <td>
                                <strong>{listing.cardName}</strong>
-                               <div style={{ fontSize: '0.75rem', color: '#666' }}>{listing.game.toUpperCase()} • {listing.condition}</div>
+                               <div style={{ fontSize: '0.75rem', color: '#666' }}>
+                                 {listing.game.toUpperCase()} • {listing.condition} • {listing.language} • {listing.finish}
+                               </div>
                             </td>
                             <td>
                                <span className={styles.typeBadge}>
