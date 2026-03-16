@@ -272,3 +272,105 @@
   color: rgba(255, 255, 255, 0.6);
   font-weight: 600;
 }
+
+/* Newsletter Section */
+.newsletter {
+  background: linear-gradient(0deg, #050505 0%, #111 100%);
+  padding: 8rem 2rem;
+  text-align: center;
+  border-top: 1px solid #1a1a1a;
+}
+
+.newsletterContent {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.newsletterContent h2 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #fff, #ffd700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.newsletterContent p {
+  color: #888;
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  line-height: 1.6;
+}
+
+.subForm {
+  display: flex;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.5rem;
+  border-radius: 12px;
+  border: 1px solid #222;
+  transition: all 0.3s;
+}
+
+.subForm:focus-within {
+  border-color: #ffd700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.subForm input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 1rem;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+
+.subForm button {
+  background: #ffd700;
+  color: #000;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.subForm button:hover {
+  background: #fff;
+  transform: scale(1.02);
+}
+
+.successMsg {
+  background: rgba(255, 215, 0, 0.1);
+  color: #ffd700;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .subForm {
+    flex-direction: column;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  .subForm input {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  .newsletterContent h2 {
+    font-size: 2.2rem;
+  }
+}

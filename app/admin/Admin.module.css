@@ -5,14 +5,18 @@
 }
 
 .container {
-  max-width: 800px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 4rem 2rem;
 }
 
+.headerSection {
+  margin-bottom: 3rem;
+}
+
 .title {
-  font-size: 2.2rem;
-  font-weight: 800;
+  font-size: 2.5rem;
+  font-weight: 900;
   margin-bottom: 0.5rem;
   background: linear-gradient(90deg, #fff, #ffd700);
   -webkit-background-clip: text;
@@ -21,21 +25,80 @@
 }
 
 .subtitle {
+  color: #888;
+  margin-bottom: 0;
+}
+
+/* Stats Dashboard */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.statCard {
+  background: #111;
+  border: 1px solid #222;
+  padding: 1.5rem;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  transition: transform 0.2s;
+}
+
+.statCard:hover {
+  transform: translateY(-5px);
+  border-color: #333;
+}
+
+.statIcon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.statLabel {
+  font-size: 0.8rem;
   color: #666;
-  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.statValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
 }
 
 .card {
   background: #111;
   border: 1px solid #222;
   padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #1a1a1a;
+  padding-bottom: 1rem;
 }
 
 .settingGroup {
-  border-top: 1px solid #1a1a1a;
-  padding-top: 2rem;
+  padding-top: 1rem;
 }
 
 .setting {
@@ -64,7 +127,7 @@
   min-width: 120px;
   padding: 0.8rem;
   font-weight: 900;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -76,7 +139,7 @@
   min-width: 120px;
   padding: 0.8rem;
   font-weight: 900;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -89,15 +152,14 @@
 
 /* User Table Stats */
 .sectionTitle {
-  font-size: 1.2rem;
-  color: #ffd700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  color: #fff;
+  font-weight: 700;
+  margin: 0;
 }
 
 .tableWrapper {
-  margin-top: 2rem;
+  margin-top: 1rem;
   overflow-x: auto;
 }
 
@@ -137,12 +199,13 @@
 }
 
 .roleBadge {
-  background: #222;
+  background: rgba(255, 215, 0, 0.1);
   padding: 0.2rem 0.6rem;
   border-radius: 4px;
   font-size: 0.75rem;
   color: #ffd700;
   text-transform: uppercase;
+  font-weight: 600;
 }
 
 .volume {
@@ -152,12 +215,12 @@
 }
 
 .topSeller {
-  background: rgba(255, 215, 0, 0.03);
+  background: rgba(255, 215, 0, 0.02);
 }
 
 .topSeller td:first-child::before {
-  content: "🏆";
-  margin-right: 0.5rem;
+  content: "👑";
+  margin-right: 0.8rem;
 }
 
 .auctionCell {
@@ -184,27 +247,34 @@
   background: #ffd700;
   color: #000;
   border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
   font-weight: 700;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   transition: all 0.2s ease;
 }
 
 .btnApprove:hover {
   background: #fff;
+  transform: scale(1.05);
 }
 
 .btnReject {
-  background: #222;
+  background: #1a1a1a;
   color: #ff4444;
   border: 1px solid #333;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
   font-weight: 700;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .btnReject:hover {
@@ -214,7 +284,19 @@
 
 .emptyMsg {
   text-align: center;
-  padding: 2rem;
+  padding: 3rem;
   color: #444;
   font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
 }

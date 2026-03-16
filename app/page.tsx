@@ -3,12 +3,15 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header/Header";
 import Link from "next/link";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { Send } from "lucide-react";
 import styles from "./page.module.css";
 
 export default function Home() {
   const [auctionsEnabled, setAuctionsEnabled] = useState(false);
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
 
   useEffect(() => {
     const configRef = doc(db, "config", "global");
@@ -19,6 +22,22 @@ export default function Home() {
     });
     return () => unsubscribe();
   }, []);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    try {
+      await addDoc(collection(db, "subscriptions"), {
+        email,
+        createdAt: serverTimestamp()
+      });
+      setSubscribed(true);
+      setEmail("");
+      alert("¡Gracias por suscribirte!");
+    } catch (error) {
+      console.error("Error subscribing:", error);
+    }
+  };
 
   return (
     <main className={styles.main}>
@@ -87,6 +106,30 @@ export default function Home() {
               <p>Ver Catálogo →</p>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className={styles.newsletter}>
+        <div className={styles.newsletterContent}>
+          <h2>Únete a la Élite</h2>
+          <p>Recibe noticias de lanzamientos, subastas exclusivas y ofertas limitadas directamente en tu correo.</p>
+          {!subscribed ? (
+            <form onSubmit={handleSubscribe} className={styles.subForm}>
+              <input 
+                type="email" 
+                placeholder="tu@email.com" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <button type="submit">
+                <Send size={18} /> Suscribirme
+              </button>
+            </form>
+          ) : (
+            <div className={styles.successMsg}>✨ ¡Ya estás en la lista! Revisa tu correo pronto.</div>
+          )}
         </div>
       </section>
     </main>

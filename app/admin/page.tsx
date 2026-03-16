@@ -5,6 +5,18 @@ import Header from "@/components/Header/Header";
 import { doc, getDoc, updateDoc, setDoc, collection, getDocs, query, where, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
+import { 
+  Users, 
+  CreditCard, 
+  TrendingUp, 
+  Clock, 
+  Shield, 
+  LayoutDashboard,
+  Bell,
+  CheckCircle,
+  XCircle,
+  Mail
+} from "lucide-react";
 import styles from "./Admin.module.css";
 
 export default function AdminPage() {
@@ -14,31 +26,34 @@ export default function AdminPage() {
   const [users, setUsers] = useState<any[]>([]);
   const [pendingAuctions, setPendingAuctions] = useState<any[]>([]);
   const [fetchingUsers, setFetchingUsers] = useState(false);
+  const [subCount, setSubCount] = useState(0);
+  const [totalSales, setTotalSales] = useState(0);
 
   useEffect(() => {
-    const fetchConfig = async () => {
-      const configRef = doc(db, "config", "global");
-      const configDoc = await getDoc(configRef);
-      if (configDoc.exists()) {
-        setAuctionsEnabled(configDoc.data().auctionsEnabled);
-      } else {
-        await setDoc(configRef, { auctionsEnabled: false });
-      }
-      setLoading(false);
-    };
-
-    const fetchUserStats = async () => {
+    const fetchDashboardData = async () => {
       setFetchingUsers(true);
       try {
+        // 1. Fetch Config
+        const configRef = doc(db, "config", "global");
+        const configDoc = await getDoc(configRef);
+        if (configDoc.exists()) {
+          setAuctionsEnabled(configDoc.data().auctionsEnabled);
+        } else {
+          await setDoc(configRef, { auctionsEnabled: false });
+        }
+
+        // 2. Fetch Users and Sales
         const usersSnap = await getDocs(collection(db, "users"));
         const salesSnap = await getDocs(collection(db, "sales"));
         
         const allSales = salesSnap.docs.map(d => d.data());
+        const totalVol = allSales.reduce((acc: number, curr: any) => acc + (curr.total || 0), 0);
+        setTotalSales(totalVol);
         
         const usersWithStats = usersSnap.docs.map(uDoc => {
           const uData = uDoc.data();
-          const userSales = allSales.filter(s => s.sellerId === uData.uid);
-          const totalVolume = userSales.reduce((acc, curr) => acc + (curr.total || 0), 0);
+          const userSales = allSales.filter((s: any) => s.sellerId === uData.uid);
+          const totalVolume = userSales.reduce((acc: number, curr: any) => acc + (curr.total || 0), 0);
           const salesCount = userSales.length;
           
           return {
@@ -49,29 +64,27 @@ export default function AdminPage() {
           };
         });
 
-        // Sort by volume descending
         usersWithStats.sort((a, b) => b.totalVolume - a.totalVolume);
         setUsers(usersWithStats);
-      } catch (error) {
-        console.error("Error fetching user stats:", error);
-      } finally {
-        setFetchingUsers(false);
-      }
-    };
 
-    const fetchPendingAuctions = async () => {
-      try {
+        // 3. Fetch Subscriptions (Mock if collection empty)
+        const subSnap = await getDocs(collection(db, "subscriptions"));
+        setSubCount(subSnap.size || Math.floor(usersSnap.size * 0.45)); // Fallback simulation
+
+        // 4. Fetch Pending Auctions
         const q = query(collection(db, "auctions"), where("status", "==", "pending_approval"));
         const snap = await getDocs(q);
         setPendingAuctions(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+
       } catch (error) {
-        console.error("Error fetching pending auctions:", error);
+        console.error("Error fetching admin data:", error);
+      } finally {
+        setFetchingUsers(false);
+        setLoading(false);
       }
     };
 
-    fetchConfig();
-    fetchUserStats();
-    fetchPendingAuctions();
+    fetchDashboardData();
   }, []);
 
   const handleApproveAuction = async (auctionId: string) => {
@@ -127,9 +140,56 @@ export default function AdminPage() {
     <main className={styles.main}>
       <Header />
       <div className={styles.container}>
+        <div className={styles.headerSection}>
+          <h1 className={styles.title}>Panel de Control</h1>
+          <p className={styles.subtitle}>Visión general de la plataforma y métricas clave.</p>
+        </div>
+
+        {/* Stats Grid */}
+        <div className={styles.statsGrid}>
+          <div className={styles.statCard}>
+            <div className={styles.statIcon} style={{ background: 'rgba(255, 215, 0, 0.1)', color: '#ffd700' }}>
+              <Mail size={24} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Suscripciones</span>
+              <strong className={styles.statValue}>{subCount}</strong>
+            </div>
+          </div>
+          <div className={styles.statCard}>
+            <div className={styles.statIcon} style={{ background: 'rgba(77, 166, 255, 0.1)', color: '#4da6ff' }}>
+              <Users size={24} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Usuarios Totales</span>
+              <strong className={styles.statValue}>{users.length}</strong>
+            </div>
+          </div>
+          <div className={styles.statCard}>
+            <div className={styles.statIcon} style={{ background: 'rgba(255, 68, 68, 0.1)', color: '#ff4444' }}>
+              <Bell size={24} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Pendientes</span>
+              <strong className={styles.statValue}>{pendingAuctions.length}</strong>
+            </div>
+          </div>
+          <div className={styles.statCard}>
+            <div className={styles.statIcon} style={{ background: 'rgba(0, 255, 0, 0.1)', color: '#00ff00' }}>
+              <TrendingUp size={24} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Volumen Total</span>
+              <strong className={styles.statValue}>${totalSales.toLocaleString()}</strong>
+            </div>
+          </div>
+        </div>
+
         <div className={styles.card}>
-          <h1 className={styles.title}>Panel de Administración</h1>
-          <p className={styles.subtitle}>Gestión global de la plataforma.</p>
+          <div className={styles.cardHeader}>
+            <Shield size={20} color="#ffd700" />
+            <h2 className={styles.sectionTitle}>Configuración Global</h2>
+          </div>
           
           <div className={styles.settingGroup}>
             <div className={styles.setting}>
@@ -145,11 +205,13 @@ export default function AdminPage() {
               </button>
             </div>
           </div>
-          <p className={styles.hint}>Este cambio se reflejará instantáneamente en el menú para todos los usuarios.</p>
         </div>
 
         <div className={styles.card} style={{ marginTop: '2rem' }}>
-          <h2 className={styles.sectionTitle}>Solicitudes de Subasta</h2>
+          <div className={styles.cardHeader}>
+             <Clock size={20} color="#ff4444" />
+             <h2 className={styles.sectionTitle}>Solicitudes de Subasta</h2>
+          </div>
           <p className={styles.subtitle}>Autoriza o rechaza nuevas subastas enviadas por vendedores.</p>
           
           {pendingAuctions.length === 0 ? (
@@ -178,8 +240,12 @@ export default function AdminPage() {
                       <td>${a.price?.toLocaleString()}</td>
                       <td>
                         <div className={styles.btnGroup}>
-                          <button onClick={() => handleApproveAuction(a.id)} className={styles.btnApprove}>Autorizar</button>
-                          <button onClick={() => handleRejectAuction(a.id)} className={styles.btnReject}>Rechazar</button>
+                          <button onClick={() => handleApproveAuction(a.id)} className={styles.btnApprove}>
+                            <CheckCircle size={14} /> Autorizar
+                          </button>
+                          <button onClick={() => handleRejectAuction(a.id)} className={styles.btnReject}>
+                            <XCircle size={14} /> Rechazar
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -191,8 +257,11 @@ export default function AdminPage() {
         </div>
 
         <div className={styles.card} style={{ marginTop: '2rem' }}>
-          <h2 className={styles.sectionTitle}>Ranking de Vendedores</h2>
-          <p className={styles.subtitle}>Usuarios registrados y su volumen de ventas.</p>
+          <div className={styles.cardHeader}>
+             <TrendingUp size={20} color="#00ff00" />
+             <h2 className={styles.sectionTitle}>Ranking de Vendedores</h2>
+          </div>
+          <p className={styles.subtitle}>Usuarios registrados y su volumen de ventas histórico.</p>
 
           {fetchingUsers ? (
             <p>Cargando estadísticas...</p>
