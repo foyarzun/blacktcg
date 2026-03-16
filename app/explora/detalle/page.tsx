@@ -4,9 +4,12 @@ import React, { useState, useEffect, Suspense } from "react";
 import Header from "@/components/Header/Header";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { doc, getDoc, collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useSearchParams } from "next/navigation";
+import { MapPin } from "lucide-react";
+import { getDistanceInfo } from "@/lib/geo";
 import styles from "./Detail.module.css";
 
 const MOCK_HISTORICAL_DATA = [
@@ -22,11 +25,12 @@ function DetailContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const { addToCart } = useCart();
-  const [userLocation, setUserLocation] = useState<{lat: number, lon: number} | null>(null);
+  const { userData } = useAuth();
   const [activeTab, setActiveTab] = useState("vendedores");
   const [card, setCard] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState<any[]>([]);
+  const [distanceInfo, setDistanceInfo] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -90,7 +94,8 @@ function DetailContent() {
         cardNumber: data.number || data.cardNumber || "S/N",
         language: data.language || "Español",
         finish: data.finish || "Normal",
-        rarity: data.rarity || data.condition || "Rara"
+        rarity: data.rarity || data.condition || "Rara",
+        sellerCity: data.sellerCity || "Santiago"
       };
     };
 
@@ -175,6 +180,13 @@ function DetailContent() {
     };
   }, [id]);
 
+  useEffect(() => {
+    if (card && userData) {
+      const info = getDistanceInfo(userData.comuna, card.sellerCity);
+      setDistanceInfo(info);
+    }
+  }, [card, userData]);
+
   const handleBuy = () => {
     if (!card) return;
     addToCart({
@@ -213,7 +225,14 @@ function DetailContent() {
         <div className={styles.cardInfo}>
           <span className={styles.badge}>{card.game.toUpperCase()} • {card.condition}</span>
           <h1>{card.cardName}</h1>
-          <p className={styles.meta}>Vendido por <strong>{card.sellerName}</strong></p>
+          <p className={styles.meta}>
+            Vendido por <strong>{card.sellerName}</strong>
+            {distanceInfo && (
+              <span className={styles.distanceBadge}>
+                <MapPin size={12} /> {distanceInfo}
+              </span>
+            )}
+          </p>
         </div>
         <div className={styles.priceOverview}>
           <span>Precio del Vendedor</span>
