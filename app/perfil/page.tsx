@@ -9,13 +9,13 @@ import { User, MapPin, Landmark, Save, ShoppingBag } from "lucide-react";
 import styles from "./Perfil.module.css";
 
 const COMUNAS_CHILE = [
-  "Santiago", "Las Condes", "Providencia", "Viña del Mar", "Valparaíso", 
-  "Concepción", "Antofagasta", "La Serena", "Temuco", "Puerto Montt",
-  "Rancagua", "Talca", "Arica", "Iquique", "Chillán", "Puente Alto", "Maipú"
+  "Santiago", "Las Condes", "Providencia", "Viña del Mar", "Valparaíso",
+  "Concepción", "Antofagasta", "La Serena", "Temuco", "Puerto Montt", "Puerto Varas",
+  "Rancagua", "Talca", "Arica", "Iquique", "Chillán", "Puente Alto", "Maipú", "La Florida"
 ].sort();
 
 const BANCOS_CHILE = [
-  "Banco Estado", "Banco de Chile", "Santander", "BCI", "Scotiabank", 
+  "Banco Estado", "Banco de Chile", "Santander", "BCI", "Scotiabank",
   "Itaú", "Banco Falabella", "Banco Security", "Banco Ripley", "Banco Internacional"
 ].sort();
 
@@ -107,14 +107,14 @@ export default function PerfilPage() {
           </div>
 
           <div className={styles.tabs}>
-            <button 
+            <button
               type="button"
               className={`${styles.tabBtn} ${activeTab === "perfil" ? styles.activeTab : ""}`}
               onClick={() => setActiveTab("perfil")}
             >
               <User size={16} /> Datos de Perfil
             </button>
-            <button 
+            <button
               type="button"
               className={`${styles.tabBtn} ${activeTab === "compras" ? styles.activeTab : ""}`}
               onClick={() => setActiveTab("compras")}
@@ -130,28 +130,28 @@ export default function PerfilPage() {
                 <div className={styles.grid}>
                   <div className={styles.formGroup}>
                     <label className={styles.label}>Nombre</label>
-                    <input 
-                      className={styles.input} 
-                      value={formData.nombre} 
-                      onChange={(e) => setFormData({...formData, nombre: e.target.value})}
-                      placeholder="Ej: Fernando" required
+                    <input
+                      className={styles.input}
+                      value={formData.nombre}
+                      onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+                      placeholder="Ej: Andres" required
                     />
                   </div>
                   <div className={styles.formGroup}>
                     <label className={styles.label}>Apellido</label>
-                    <input 
-                      className={styles.input} 
-                      value={formData.apellido} 
-                      onChange={(e) => setFormData({...formData, apellido: e.target.value})}
-                      placeholder="Ej: Oyarzún" required
+                    <input
+                      className={styles.input}
+                      value={formData.apellido}
+                      onChange={(e) => setFormData({ ...formData, apellido: e.target.value })}
+                      placeholder="Ej: Soto" required
                     />
                   </div>
                   <div className={`${styles.formGroup} ${styles.fullWidth}`}>
                     <label className={styles.label}>Correo Electrónico</label>
-                    <input 
-                      className={styles.input} 
+                    <input
+                      className={styles.input}
                       type="email"
-                      value={formData.email} 
+                      value={formData.email}
                       placeholder="email@ejemplo.com" disabled
                     />
                   </div>
@@ -163,28 +163,28 @@ export default function PerfilPage() {
                 <div className={styles.grid}>
                   <div className={`${styles.formGroup} ${styles.fullWidth}`}>
                     <label className={styles.label}>Calle</label>
-                    <input 
-                      className={styles.input} 
-                      value={formData.calle} 
-                      onChange={(e) => setFormData({...formData, calle: e.target.value})}
+                    <input
+                      className={styles.input}
+                      value={formData.calle}
+                      onChange={(e) => setFormData({ ...formData, calle: e.target.value })}
                       placeholder="Ej: Av. Las Américas" required
                     />
                   </div>
                   <div className={styles.formGroup}>
                     <label className={styles.label}>Número</label>
-                    <input 
-                      className={styles.input} 
-                      value={formData.numero} 
-                      onChange={(e) => setFormData({...formData, numero: e.target.value})}
+                    <input
+                      className={styles.input}
+                      value={formData.numero}
+                      onChange={(e) => setFormData({ ...formData, numero: e.target.value })}
                       placeholder="123" required
                     />
                   </div>
                   <div className={styles.formGroup}>
                     <label className={styles.label}>Comuna</label>
-                    <select 
-                      className={styles.select} 
-                      value={formData.comuna} 
-                      onChange={(e) => setFormData({...formData, comuna: e.target.value})}
+                    <select
+                      className={styles.select}
+                      value={formData.comuna}
+                      onChange={(e) => setFormData({ ...formData, comuna: e.target.value })}
                       required
                     >
                       <option value="">Selecciona una comuna</option>
@@ -199,10 +199,10 @@ export default function PerfilPage() {
                 <div className={styles.grid}>
                   <div className={styles.formGroup}>
                     <label className={styles.label}>Banco</label>
-                    <select 
-                      className={styles.select} 
-                      value={formData.banco} 
-                      onChange={(e) => setFormData({...formData, banco: e.target.value})}
+                    <select
+                      className={styles.select}
+                      value={formData.banco}
+                      onChange={(e) => setFormData({ ...formData, banco: e.target.value })}
                       required
                     >
                       <option value="">Selecciona un banco</option>
@@ -211,10 +211,10 @@ export default function PerfilPage() {
                   </div>
                   <div className={styles.formGroup}>
                     <label className={styles.label}>Tipo de Cuenta</label>
-                    <select 
-                      className={styles.select} 
-                      value={formData.tipoCuenta} 
-                      onChange={(e) => setFormData({...formData, tipoCuenta: e.target.value})}
+                    <select
+                      className={styles.select}
+                      value={formData.tipoCuenta}
+                      onChange={(e) => setFormData({ ...formData, tipoCuenta: e.target.value })}
                       required
                     >
                       <option value="">Selecciona tipo</option>
@@ -223,10 +223,10 @@ export default function PerfilPage() {
                   </div>
                   <div className={styles.formGroup}>
                     <label className={styles.label}>Número de Cuenta</label>
-                    <input 
-                      className={styles.input} 
-                      value={formData.numeroCuenta} 
-                      onChange={(e) => setFormData({...formData, numeroCuenta: e.target.value})}
+                    <input
+                      className={styles.input}
+                      value={formData.numeroCuenta}
+                      onChange={(e) => setFormData({ ...formData, numeroCuenta: e.target.value })}
                       placeholder="00000000" required
                     />
                   </div>
