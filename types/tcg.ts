@@ -1,4 +1,4 @@
-export type TCGType = "pokemon" | "mtg" | "onepiece" | "lor";
+export type TCGType = "pokemon" | "mtg" | "onepiece" | "lor" | "yugioh";
 
 export interface TcgCard {
   id: string;

@@ -39,14 +39,14 @@ const MOCK_CARDS: TcgCardType[] = [
     details: { power: 12000, attribute: "Strike" }
   },
   {
-     id: "4",
-     name: "Aurelion Sol",
-     game: "lor",
-     rarity: "Champion",
-     price: 12.0,
-     stock: 10,
-     image: "https://static.wikia.nocookie.net/leagueoflegends/images/1/1e/03MT087-full.png",
-     details: { region: "Targon", attack: 10, health: 10 }
+    id: "4",
+    name: "Aurelion Sol",
+    game: "lor",
+    rarity: "Champion",
+    price: 12.0,
+    stock: 10,
+    image: "https://static.wikia.nocookie.net/leagueoflegends/images/1/1e/03MT087-full.png",
+    details: { region: "Targon", attack: 10, health: 10 }
   }
 ];
 
@@ -154,15 +154,15 @@ export default function ExploraPage() {
   }, []);
 
   const allCards = [
-    ...MOCK_CARDS, 
-    ...dbInventory, 
+    ...MOCK_CARDS,
+    ...dbInventory,
     ...localInventory,
     ...(auctionsEnabled ? [...dbAuctions, ...localAuctions] : [])
   ];
 
   // Filtering Logic
   let processedCards = allCards;
-  
+
   if (filter !== "all") {
     processedCards = processedCards.filter(c => c.game === filter);
   }
@@ -182,11 +182,11 @@ export default function ExploraPage() {
   return (
     <main className={styles.main}>
       <Header />
-      
+
       <div className={styles.container}>
         <div className={styles.sidebar}>
           <h2 className={styles.sidebarTitle}>Filtros</h2>
-          
+
           <div className={styles.filterGroup}>
             <label>Juego</label>
             <select value={filter} onChange={(e) => setFilter(e.target.value)} className={styles.select}>
@@ -194,6 +194,7 @@ export default function ExploraPage() {
               <option value="pokemon">Pokémon TCG</option>
               <option value="mtg">Magic: The Gathering</option>
               <option value="onepiece">One Piece</option>
+              <option value="yugioh">Yu-Gi-Oh!</option>
               <option value="lor">Legends of Runeterra</option>
             </select>
           </div>
