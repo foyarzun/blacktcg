@@ -49,9 +49,50 @@ export async function fetchMarketPrice(game: string, name: string, expansion?: s
       }
     }
 
-    // 3. Fallback / Mock for others (One Piece, LoR)
-    // In a real app, you'd use specific APIs for OP or Lor.
-    // For now, let's return a simulated price based on the current price +/- 10%
+    // 3. One Piece (optcgapi.com)
+    if (gameType === "onepiece") {
+      // Priority 1: Search by Card ID if valid
+      if (number && number !== "S/N" && number.includes("-")) {
+        try {
+          const response = await fetch(`https://www.optcgapi.com/api/sets/card/${number}/`);
+          if (response.ok) {
+            const data = await response.json();
+            if (data && (data.market_price || data.inventory_price)) {
+              const refPrice = data.market_price || data.inventory_price;
+              return {
+                price: Math.round(refPrice * 950),
+                source: "OPTCG API (USD)",
+                currency: "CLP"
+              };
+            }
+          }
+        } catch (e) {
+          console.warn("Error fetching by card ID, trying name search...");
+        }
+      }
+      
+      // Priority 2: Search by Name
+      try {
+        const response = await fetch(`https://www.optcgapi.com/api/sets/filtered/?card_name=${encodeURIComponent(name)}`);
+        if (response.ok) {
+          const data = await response.json();
+          // The API returns a list for filtered results
+          const results = Array.isArray(data) ? data : (data.results || []);
+          const card = results[0];
+          if (card && (card.market_price || card.inventory_price)) {
+            const refPrice = card.market_price || card.inventory_price;
+            return {
+              price: Math.round(refPrice * 950),
+              source: "OPTCG API (USD)",
+              currency: "CLP"
+            };
+          }
+        }
+      } catch (e) {
+        console.error("Error fetching One Piece price by name:", e);
+      }
+    }
+
     return null;
 
   } catch (error) {
