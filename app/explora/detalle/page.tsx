@@ -8,8 +8,9 @@ import { useAuth } from "@/context/AuthContext";
 import { doc, getDoc, collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useSearchParams } from "next/navigation";
-import { MapPin } from "lucide-react";
+import { MapPin, Info } from "lucide-react";
 import { getDistanceInfo } from "@/lib/geo";
+import { fetchMarketPrice, MarketPriceResult } from "@/lib/marketApi";
 import styles from "./Detail.module.css";
 
 const MOCK_HISTORICAL_DATA = [
@@ -31,6 +32,7 @@ function DetailContent() {
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState<any[]>([]);
   const [distanceInfo, setDistanceInfo] = useState<string | null>(null);
+  const [marketRef, setMarketRef] = useState<MarketPriceResult | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -181,6 +183,16 @@ function DetailContent() {
   }, [id]);
 
   useEffect(() => {
+    if (card) {
+      const getMarket = async () => {
+        const res = await fetchMarketPrice(card.game, card.cardName, card.expansion, card.cardNumber);
+        setMarketRef(res);
+      };
+      getMarket();
+    }
+  }, [card?.cardName, card?.game]);
+
+  useEffect(() => {
     if (card && userData) {
       const info = getDistanceInfo(userData.comuna, card.sellerCity);
       setDistanceInfo(info);
@@ -238,6 +250,12 @@ function DetailContent() {
           <span>Precio del Vendedor</span>
           <strong className={styles.marketPrice}>${card.price.toLocaleString()}</strong>
           <span className={styles.trend}>Stock disponible: {card.stock}</span>
+          {marketRef && (
+            <div className={styles.referencePrice}>
+              <Info size={12} />
+              <span>Ref. Mercado: <strong>${marketRef.price.toLocaleString()}</strong> ({marketRef.source})</span>
+            </div>
+          )}
         </div>
       </div>
 
