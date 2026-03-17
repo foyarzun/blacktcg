@@ -99,11 +99,11 @@
 /* Body Layout with Ads */
 .pageBodyLayout {
   display: grid;
-  grid-template-columns: 280px 850px 280px;
+  grid-template-columns: 280px 750px 280px;
   justify-content: center;
   width: 100%;
-  padding: 0 1rem;
-  gap: 1.5rem;
+  padding: 0 0.5rem;
+  gap: 1rem;
   margin-top: 15rem; /* Space for fixed Header + FilterBar */
 }
 
@@ -130,8 +130,9 @@
 }
 
 .contentArea {
-  width: 100%; /* Fills the 850px grid track */
-  max-width: 850px;
+  width: 100%; /* Fills the 750px grid track */
+  max-width: 750px;
+  overflow: hidden; /* Strict containment of cards */
 }
 
 /* Grid */
