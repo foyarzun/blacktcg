@@ -1,0 +1,541 @@
+.main {
+  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+}
+
+.hero {
+  height: 90vh;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+.heroLeft {
+  flex: 0 0 65%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.heroRight {
+  flex: 0 0 35%;
+  background: #080808;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  position: relative;
+}
+
+.heroVideo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1;
+  object-fit: cover;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+  z-index: 0;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 50%);
+  z-index: 1;
+}
+
+.heroContent {
+  text-align: center;
+  z-index: 2;
+  animation: fadeIn 1.5s ease-out;
+}
+
+.title {
+  font-size: 5rem;
+  font-weight: 900;
+  letter-spacing: 0.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #fff 0%, #666 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: #aaa;
+  margin-bottom: 3rem;
+  letter-spacing: 2px;
+}
+
+.ctaGroup {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.primaryBtn {
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 1px;
+}
+
+.primaryBtn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+}
+
+.secondaryBtn {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+}
+
+.secondaryBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #fff;
+}
+
+.auctionBtn {
+  background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+  color: #000;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 1px;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.auctionBtn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(255, 215, 0, 0.4);
+  background: #fff;
+}
+
+.featuredSellers {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 3rem;
+  text-align: center;
+  background: linear-gradient(to right, #fff, #666);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sellersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.sellerCard {
+  background: #111;
+  border: 1px solid #222;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.sellerCard:hover {
+  border-color: #ffd700;
+  transform: translateY(-10px);
+  background: #161616;
+}
+
+.sellerCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.sellerCard:hover::before {
+  opacity: 1;
+}
+
+.sellerImg {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  border: 2px solid #333;
+}
+
+.sellerCard h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.sellerStats {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    flex-direction: column;
+    height: auto;
+  }
+  .heroLeft, .heroRight {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+  .heroLeft {
+    height: 60vh;
+  }
+  .heroRight {
+    height: 400px;
+  }
+  .title {
+    font-size: 3.5rem;
+  }
+}
+
+/* Slider Styles */
+.sliderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.sliderHeader h3 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ffd700;
+  font-weight: 800;
+}
+
+.slideDots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #333;
+  transition: all 0.3s;
+}
+
+.activeDot {
+  background: #ffd700;
+  width: 20px;
+  border-radius: 4px;
+}
+
+.sliderContainer {
+  flex: 1;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(20px);
+  text-decoration: none;
+}
+
+.activeSlide {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.slideImageWrapper {
+  width: 100%;
+  aspect-ratio: 5/7;
+  max-height: 280px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.slideImageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.5s;
+}
+
+.slide:hover .slideImageWrapper img {
+  transform: scale(1.05);
+}
+
+.slideInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.slideGame {
+  font-size: 0.7rem;
+  color: #888;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.slideInfo h4 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.slidePrice {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #ffd700;
+}
+
+.slideSeller {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.noSlides {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #444;
+}
+
+.tcgSection {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tcgGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.tcgBox {
+  padding: 2.5rem;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tcgBox:hover {
+  transform: scale(1.05) translateY(-5px);
+  filter: brightness(1.2);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+}
+
+.tcgBox h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+}
+
+.tcgBox p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+}
+
+/* Newsletter Section */
+.newsletter {
+  background: linear-gradient(0deg, #050505 0%, #111 100%);
+  padding: 8rem 2rem;
+  text-align: center;
+  border-top: 1px solid #1a1a1a;
+}
+
+.newsletterContent {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.newsletterContent h2 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #fff, #ffd700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.newsletterContent p {
+  color: #888;
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  line-height: 1.6;
+}
+
+.subForm {
+  display: flex;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.5rem;
+  border-radius: 12px;
+  border: 1px solid #222;
+  transition: all 0.3s;
+}
+
+.subForm:focus-within {
+  border-color: #ffd700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.subForm input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 1rem;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+
+.subForm button {
+  background: #ffd700;
+  color: #000;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.subForm button:hover {
+  background: #fff;
+  transform: scale(1.02);
+}
+
+.successMsg {
+  background: rgba(255, 215, 0, 0.1);
+  color: #ffd700;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .subForm {
+    flex-direction: column;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  .subForm input {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  .newsletterContent h2 {
+    font-size: 2.2rem;
+  }
+}
+
+.separatorContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #000;
+  padding: 0;
+  margin: 0;
+}
+
+.separatorImg {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
