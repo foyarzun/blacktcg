@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Header from "@/components/Header/Header";
 import TcgCard from "@/components/TcgCard/TcgCard";
 import { TcgCard as TcgCardType } from "@/types/tcg";
@@ -33,7 +34,7 @@ const MOCK_CARDS: TcgCardType[] = [
   }
 ];
 
-export default function Explora2Page() {
+function Explora2Content() {
   const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("recent");
   const [regionFilter, setRegionFilter] = useState("all");
@@ -42,6 +43,14 @@ export default function Explora2Page() {
   const [dbAuctions, setDbAuctions] = useState<TcgCardType[]>([]);
   const [auctionsEnabled, setAuctionsEnabled] = useState(false);
   const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const gameParam = searchParams.get("game");
+    if (gameParam) {
+      setFilter(gameParam);
+    }
+  }, [searchParams]);
 
   React.useEffect(() => {
     const configRef = doc(db, "config", "global");
@@ -130,7 +139,7 @@ export default function Explora2Page() {
 
       <div className={styles.container}>
         <div className={styles.headerSection}>
-          <h1 className={styles.pageTitle}>Explora el Catálogo v2</h1>
+          <h1 className={styles.pageTitle}>Explora el Catálogo</h1>
           <p className={styles.resultCount}>{processedCards.length} cartas disponibles para ti</p>
         </div>
 
@@ -202,5 +211,13 @@ export default function Explora2Page() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function Explora2Page() {
+  return (
+    <Suspense fallback={<div style={{ color: 'white', padding: '2rem' }}>Cargando catálogo...</div>}>
+      <Explora2Content />
+    </Suspense>
   );
 }

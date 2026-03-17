@@ -62,19 +62,19 @@ export default function Header() {
             <>
               <Link href="/admin">Panel Admin</Link>
               <Link href="/vendedor">Ventas Globales</Link>
-              <Link href="/explora">Marketplace</Link>
+              <Link href="/explora2">Marketplace</Link>
               {auctionsEnabled && <Link href="/subastas" className={styles.auctionLink}>Subastas</Link>}
             </>
           ) : userData?.role === "seller" ? (
             <>
               <Link href="/vendedor">Mi Panel</Link>
               <Link href="/perfil">Mi Perfil</Link>
-              <Link href="/explora">Explorar</Link>
+              <Link href="/explora2">Explorar</Link>
               {auctionsEnabled && <Link href="/subastas" className={styles.auctionLink}>Subastas</Link>}
             </>
           ) : (
             <>
-              <Link href="/explora">Explorar</Link>
+              <Link href="/explora2">Explorar</Link>
               {auctionsEnabled && <Link href="/subastas" className={styles.auctionLink}>Subastas</Link>}
             </>
           )}

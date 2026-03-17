@@ -57,7 +57,7 @@ export default function Home() {
           <h1 className={styles.title}>BLACK TCG</h1>
           <p className={styles.subtitle}>El destino premium para coleccionistas de TCG.</p>
           <div className={styles.ctaGroup}>
-            <Link href="/explora" className={styles.primaryBtn}>Explorar Colecciones</Link>
+            <Link href="/explora2" className={styles.primaryBtn}>Explorar Colecciones</Link>
             <Link href="/vendedor" className={styles.secondaryBtn}>Vender mis Cartas</Link>
             {auctionsEnabled && (
               <Link href="/subastas" className={styles.auctionBtn}>Ir a Subastas</Link>
@@ -98,7 +98,7 @@ export default function Home() {
           ].map((game) => (
             <Link 
               key={game.id} 
-              href={`/explora?game=${game.id}`} 
+              href={`/explora2?game=${game.id}`} 
               className={styles.tcgBox}
               style={{ borderColor: game.color, backgroundColor: game.bg }}
             >
