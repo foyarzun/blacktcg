@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header/Header";
 import Link from "next/link";
-import { doc, onSnapshot, addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { doc, onSnapshot, addDoc, collection, serverTimestamp, query, orderBy, limit, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Send } from "lucide-react";
 import styles from "./page.module.css";
@@ -12,16 +12,42 @@ export default function Home() {
   const [auctionsEnabled, setAuctionsEnabled] = useState(false);
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [latestCards, setLatestCards] = useState<any[]>([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
+    // 1. Fetch auctions config
     const configRef = doc(db, "config", "global");
-    const unsubscribe = onSnapshot(configRef, (snap) => {
+    const unsubConfig = onSnapshot(configRef, (snap) => {
       if (snap.exists()) {
         setAuctionsEnabled(snap.data().auctionsEnabled);
       }
     });
-    return () => unsubscribe();
+
+    // 2. Fetch latest cards for slider
+    const q = query(collection(db, "inventory"), where("status", "==", "active"), orderBy("createdAt", "desc"), limit(5));
+    const unsubLatest = onSnapshot(q, (snapshot) => {
+      const items = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setLatestCards(items);
+    });
+
+    return () => {
+      unsubConfig();
+      unsubLatest();
+    };
   }, []);
+
+  // 3. Slider logic
+  useEffect(() => {
+    if (latestCards.length === 0) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % latestCards.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [latestCards]);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,24 +69,53 @@ export default function Home() {
     <main className={styles.main}>
       <Header />
       <section className={styles.hero}>
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className={styles.heroVideo}
-        >
-          <source src="/hero_animated.mp4" type="video/mp4" />
-        </video>
-        <div className={styles.heroOverlay}></div>
-        <div className={styles.heroContent}>
-          <h1 className={styles.title}>BLACK TCG</h1>
-          <p className={styles.subtitle}>El destino premium para coleccionistas de TCG.</p>
-          <div className={styles.ctaGroup}>
-            <Link href="/explora2" className={styles.primaryBtn}>Explorar Colecciones</Link>
-            <Link href="/vendedor" className={styles.secondaryBtn}>Vender mis Cartas</Link>
-            {auctionsEnabled && (
-              <Link href="/subastas" className={styles.auctionBtn}>Ir a Subastas</Link>
+        <div className={styles.heroLeft}>
+          <video autoPlay muted loop playsInline className={styles.heroVideo}>
+            <source src="/hero_animated.mp4" type="video/mp4" />
+          </video>
+          <div className={styles.heroOverlay}></div>
+          <div className={styles.heroContent}>
+            <h1 className={styles.title}>BLACK TCG</h1>
+            <p className={styles.subtitle}>El destino premium para coleccionistas.</p>
+            <div className={styles.ctaGroup}>
+              <Link href="/explora2" className={styles.primaryBtn}>Explorar</Link>
+              <Link href="/vendedor" className={styles.secondaryBtn}>Vender</Link>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.heroRight}>
+          <div className={styles.sliderHeader}>
+            <h3>Novedades Recientes</h3>
+            <div className={styles.slideDots}>
+              {latestCards.map((_, i) => (
+                <span key={i} className={`${styles.dot} ${currentSlide === i ? styles.activeDot : ''}`} />
+              ))}
+            </div>
+          </div>
+          <div className={styles.sliderContainer}>
+            {latestCards.length > 0 ? (
+              latestCards.map((card, index) => (
+                <Link 
+                  href={`/explora/detalle?id=${card.id}`}
+                  key={card.id} 
+                  className={`${styles.slide} ${currentSlide === index ? styles.activeSlide : ''}`}
+                >
+                  <div className={styles.slideImageWrapper}>
+                    <img src={card.imageUrl || "https://images.pokemontcg.io/base1/4_hires.png"} alt={card.cardName} />
+                  </div>
+                  <div className={styles.slideInfo}>
+                    <span className={styles.slideGame}>{card.game?.toUpperCase()}</span>
+                    <h4>{card.cardName}</h4>
+                    <p className={styles.slidePrice}>${card.price?.toLocaleString()}</p>
+                    <span className={styles.slideSeller}>por {card.sellerName || "Individual"}</span>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <div className={styles.noSlides}>
+                <p>Cargando últimas joyitas...</p>
+              </div>
             )}
           </div>
         </div>

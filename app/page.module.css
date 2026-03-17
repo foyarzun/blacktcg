@@ -5,12 +5,30 @@
 }
 
 .hero {
-  height: 80vh;
+  height: 90vh;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+.heroLeft {
+  flex: 0 0 65%;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   overflow: hidden;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.heroRight {
+  flex: 0 0 35%;
+  background: #080808;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  position: relative;
 }
 
 .heroVideo {
@@ -54,7 +72,7 @@
 }
 
 .title {
-  font-size: 6rem;
+  font-size: 5rem;
   font-weight: 900;
   letter-spacing: 0.5rem;
   margin-bottom: 1rem;
@@ -216,17 +234,146 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 768px) {
-  .title {
-    font-size: 3rem;
-  }
-  .ctaGroup {
+@media (max-width: 1024px) {
+  .hero {
     flex-direction: column;
-    gap: 1rem;
+    height: auto;
   }
-  .featuredSellers {
-    padding: 3rem 1rem;
+  .heroLeft, .heroRight {
+    flex: 0 0 100%;
+    width: 100%;
   }
+  .heroLeft {
+    height: 60vh;
+  }
+  .heroRight {
+    height: 400px;
+  }
+  .title {
+    font-size: 3.5rem;
+  }
+}
+
+/* Slider Styles */
+.sliderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.sliderHeader h3 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ffd700;
+  font-weight: 800;
+}
+
+.slideDots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #333;
+  transition: all 0.3s;
+}
+
+.activeDot {
+  background: #ffd700;
+  width: 20px;
+  border-radius: 4px;
+}
+
+.sliderContainer {
+  flex: 1;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(20px);
+  text-decoration: none;
+}
+
+.activeSlide {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.slideImageWrapper {
+  width: 100%;
+  aspect-ratio: 5/7;
+  max-height: 280px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.slideImageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.5s;
+}
+
+.slide:hover .slideImageWrapper img {
+  transform: scale(1.05);
+}
+
+.slideInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.slideGame {
+  font-size: 0.7rem;
+  color: #888;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.slideInfo h4 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.slidePrice {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #ffd700;
+}
+
+.slideSeller {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.noSlides {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #444;
 }
 
 .tcgSection {
