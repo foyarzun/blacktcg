@@ -136,91 +136,89 @@ function Explora2Content() {
   return (
     <main className={styles.main}>
       <Header isSticky={false} />
-
-      <div className={styles.container}>
-        <div className={styles.headerSection} style={{ paddingTop: '2rem' }}>
-          <h1 className={styles.pageTitle}>Explora el Catálogo</h1>
-          <p className={styles.resultCount}>{processedCards.length} cartas disponibles para ti</p>
+      
+      <div className={styles.filterBar}>
+        <div className={styles.filterGroup}>
+          <label><Layers size={14} style={{ marginRight: '6px' }} /> Juego</label>
+          <select value={filter} onChange={(e) => setFilter(e.target.value)} className={styles.select}>
+            <option value="all">Todos los Juegos</option>
+            <option value="pokemon">Pokémon TCG</option>
+            <option value="mtg">Magic: The Gathering</option>
+            <option value="onepiece">One Piece</option>
+            <option value="yugioh">Yu-Gi-Oh!</option>
+            <option value="lor">Legends of Runeterra</option>
+          </select>
         </div>
 
-        <div className={styles.filterBar}>
-          <div className={styles.filterGroup}>
-            <label><Layers size={14} style={{ marginRight: '6px' }} /> Juego</label>
-            <select value={filter} onChange={(e) => setFilter(e.target.value)} className={styles.select}>
-              <option value="all">Todos los Juegos</option>
-              <option value="pokemon">Pokémon TCG</option>
-              <option value="mtg">Magic: The Gathering</option>
-              <option value="onepiece">One Piece</option>
-              <option value="yugioh">Yu-Gi-Oh!</option>
-              <option value="lor">Legends of Runeterra</option>
-            </select>
+        <div className={styles.filterGroup}>
+          <label><MapPin size={14} style={{ marginRight: '6px' }} /> Región</label>
+          <select 
+            value={regionFilter} 
+            onChange={(e) => {
+              setRegionFilter(e.target.value);
+              setCityFilter("all");
+            }} 
+            className={styles.select}
+          >
+            <option value="all">Todas las Regiones</option>
+            {REGIONES_CHILE.map(region => (
+              <option key={region.name} value={region.name}>{region.name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className={styles.filterGroup}>
+          <label>Comuna / Ciudad</label>
+          <select 
+            value={cityFilter} 
+            onChange={(e) => setCityFilter(e.target.value)} 
+            className={styles.select}
+            disabled={regionFilter === "all"}
+          >
+            <option value="all">
+              {regionFilter === "all" ? "Selecciona región" : "Todas las Ciudades"}
+            </option>
+            {regionFilter !== "all" && REGIONES_CHILE.find(r => r.name === regionFilter)?.communes.map(comuna => (
+              <option key={comuna} value={comuna}>{comuna}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className={styles.filterGroup}>
+          <label><ListFilter size={14} style={{ marginRight: '6px' }} /> Ordenar</label>
+          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className={styles.select}>
+            <option value="recent">Más Recientes</option>
+            <option value="price_asc">Precio: Menor a Mayor</option>
+            <option value="price_desc">Precio: Mayor a Menor</option>
+          </select>
+        </div>
+      </div>
+
+      <div className={styles.pageBodyLayout}>
+        <aside className={styles.adSidebar}>
+          Publicidad / Auspiciadores
+        </aside>
+
+        <div className={styles.contentArea}>
+          <div className={styles.headerSection}>
+            <h1 className={styles.pageTitle}>Explora el Catálogo</h1>
+            <p className={styles.resultCount}>{processedCards.length} cartas disponibles para ti</p>
           </div>
 
-          <div className={styles.filterGroup}>
-            <label><MapPin size={14} style={{ marginRight: '6px' }} /> Región</label>
-            <select 
-              value={regionFilter} 
-              onChange={(e) => {
-                setRegionFilter(e.target.value);
-                setCityFilter("all");
-              }} 
-              className={styles.select}
-            >
-              <option value="all">Todas las Regiones</option>
-              {REGIONES_CHILE.map(region => (
-                <option key={region.name} value={region.name}>{region.name}</option>
+          {loading ? (
+            <div className={styles.loading}>Sincronizando catálogo...</div>
+          ) : (
+            <div className={styles.grid}>
+              {processedCards.map(card => (
+                <TcgCard key={card.id} card={card} />
               ))}
-            </select>
-          </div>
-
-          <div className={styles.filterGroup}>
-            <label>Comuna / Ciudad</label>
-            <select 
-              value={cityFilter} 
-              onChange={(e) => setCityFilter(e.target.value)} 
-              className={styles.select}
-              disabled={regionFilter === "all"}
-            >
-              <option value="all">
-                {regionFilter === "all" ? "Selecciona región" : "Todas las Ciudades"}
-              </option>
-              {regionFilter !== "all" && REGIONES_CHILE.find(r => r.name === regionFilter)?.communes.map(comuna => (
-                <option key={comuna} value={comuna}>{comuna}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className={styles.filterGroup}>
-            <label><ListFilter size={14} style={{ marginRight: '6px' }} /> Ordenar</label>
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className={styles.select}>
-              <option value="recent">Más Recientes</option>
-              <option value="price_asc">Precio: Menor a Mayor</option>
-              <option value="price_desc">Precio: Mayor a Menor</option>
-            </select>
-          </div>
+            </div>
+          )}
         </div>
 
-        <div className={styles.pageBodyLayout}>
-          <aside className={styles.adSidebar}>
-            Publicidad / Auspiciadores
-          </aside>
-
-          <div className={styles.contentArea}>
-            {loading ? (
-              <div className={styles.loading}>Sincronizando catálogo...</div>
-            ) : (
-              <div className={styles.grid}>
-                {processedCards.map(card => (
-                  <TcgCard key={card.id} card={card} />
-                ))}
-              </div>
-            )}
-          </div>
-
-          <aside className={styles.adSidebar}>
-            Publicidad / Auspiciadores
-          </aside>
-        </div>
+        <aside className={styles.adSidebar}>
+          Publicidad / Auspiciadores
+        </aside>
       </div>
     </main>
   );

@@ -32,15 +32,17 @@
 
 /* Horizontal Filters */
 .filterBar {
-  background: #050505; /* Solid black to prevent gaps */
+  background: #050505;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1.2rem 4rem;
+  padding: 1.2rem 2rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
   align-items: flex-end;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   box-shadow: 0 10px 30px rgba(0,0,0,0.8);
 }
@@ -97,13 +99,14 @@
 /* Body Layout with Ads */
 .pageBodyLayout {
   display: flex;
+  justify-content: center;
+  width: 100%;
   padding: 0 2rem;
   gap: 2rem;
-  margin-top: 2rem;
+  margin-top: 10rem; /* Space for the fixed filterBar + Page Title */
 }
 
 .adSidebar {
-  flex: 0 0 280px;
   width: 280px;
   min-width: 280px;
   max-width: 280px;
@@ -121,21 +124,21 @@
   text-orientation: mixed;
   min-height: 85vh;
   position: sticky;
-  top: 140px; /* Space for the sticky filterBar */
+  top: 100px;
   overflow: hidden;
 }
 
 .contentArea {
-  flex: 1;
-  max-width: 1200px; /* Caps center to keep cards small */
-  margin: 0 auto;
+  width: 1000px; /* Force center width to keep cards small */
+  max-width: 1000px;
+  flex: 0 0 auto;
 }
 
 /* Grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 1.5rem;
+  gap: 1.2rem;
 }
 
 .loading {
