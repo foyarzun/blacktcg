@@ -69,54 +69,46 @@ export default function Home() {
     <main className={styles.main}>
       <Header />
       <section className={styles.hero}>
-        <div className={styles.heroLeft}>
-          <video autoPlay muted loop playsInline className={styles.heroVideo}>
-            <source src="/hero_animated.mp4" type="video/mp4" />
-          </video>
-          <div className={styles.heroOverlay}></div>
-          <div className={styles.heroContent}>
-            <h1 className={styles.title}>BLACK TCG</h1>
-            <p className={styles.subtitle}>El destino premium para coleccionistas.</p>
-            <div className={styles.ctaGroup}>
-              <Link href="/explora2" className={styles.primaryBtn}>Explorar</Link>
-              <Link href="/vendedor" className={styles.secondaryBtn}>Vender</Link>
-            </div>
+        <video autoPlay muted loop playsInline className={styles.heroVideo}>
+          <source src="/hero_animated.mp4" type="video/mp4" />
+        </video>
+        <div className={styles.heroOverlay}></div>
+        <div className={styles.heroContent}>
+          <h1 className={styles.title}>BLACK TCG</h1>
+          <p className={styles.subtitle}>El destino premium para coleccionistas.</p>
+          <div className={styles.ctaGroup}>
+            <Link href="/explora2" className={styles.primaryBtn}>Explorar</Link>
+            <Link href="/vendedor" className={styles.secondaryBtn}>Vender</Link>
           </div>
-        </div>
 
-        <div className={styles.heroRight}>
-          <div className={styles.sliderHeader}>
-            <h3>Novedades Recientes</h3>
-            <div className={styles.slideDots}>
-              {latestCards.map((_, i) => (
-                <span key={i} className={`${styles.dot} ${currentSlide === i ? styles.activeDot : ''}`} />
-              ))}
-            </div>
-          </div>
-          <div className={styles.sliderContainer}>
-            {latestCards.length > 0 ? (
-              latestCards.map((card, index) => (
-                <Link 
-                  href={`/explora/detalle?id=${card.id}`}
-                  key={card.id} 
-                  className={`${styles.slide} ${currentSlide === index ? styles.activeSlide : ''}`}
-                >
-                  <div className={styles.slideImageWrapper}>
-                    <img src={card.imageUrl || "https://images.pokemontcg.io/base1/4_hires.png"} alt={card.cardName} />
-                  </div>
-                  <div className={styles.slideInfo}>
-                    <span className={styles.slideGame}>{card.game?.toUpperCase()}</span>
-                    <h4>{card.cardName}</h4>
-                    <p className={styles.slidePrice}>${card.price?.toLocaleString()}</p>
-                    <span className={styles.slideSeller}>por {card.sellerName || "Individual"}</span>
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <div className={styles.noSlides}>
-                <p>Cargando últimas joyitas...</p>
+          <div className={styles.recentSliderCentered}>
+            <div className={styles.sliderHeaderSmall}>
+              <h3>Novedades Recientes</h3>
+              <div className={styles.slideDots}>
+                {latestCards.map((_, i) => (
+                  <span key={i} className={`${styles.dot} ${currentSlide === i ? styles.activeDot : ''}`} />
+                ))}
               </div>
-            )}
+            </div>
+            <div className={styles.sliderHorizontal}>
+              {latestCards.length > 0 ? (
+                latestCards.map((card, index) => (
+                  <Link 
+                    href={`/explora/detalle?id=${card.id}`}
+                    key={card.id} 
+                    className={`${styles.miniSlide} ${currentSlide === index ? styles.activeMiniSlide : ''}`}
+                  >
+                    <img src={card.imageUrl || "https://images.pokemontcg.io/base1/4_hires.png"} alt={card.cardName} className={styles.miniImg} />
+                    <div className={styles.miniInfo}>
+                      <h4>{card.cardName}</h4>
+                      <p>${card.price?.toLocaleString()}</p>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <div className={styles.noSlidesSmall}>Cargando...</div>
+              )}
+            </div>
           </div>
         </div>
       </section>
