@@ -5,6 +5,8 @@ import Header from "@/components/Header/Header";
 import TcgCard from "@/components/TcgCard/TcgCard";
 import SearchFilters from "@/components/SearchFilters/SearchFilters";
 import { TcgCard as TcgCardType } from "@/types/tcg";
+import { REGIONES_CHILE } from "@/lib/chileData";
+import { MapPin } from "lucide-react";
 import styles from "./Explora.module.css";
 
 const MOCK_CARDS: TcgCardType[] = [
@@ -53,15 +55,12 @@ const MOCK_CARDS: TcgCardType[] = [
 import { collection, onSnapshot, query, where, doc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
-const COMUNAS_CHILE = [
-  "Santiago", "Las Condes", "Providencia", "Viña del Mar", "Valparaíso",
-  "Concepción", "Antofagasta", "La Serena", "Temuco", "Puerto Montt", "Puerto Varas",
-  "Rancagua", "Talca", "Arica", "Iquique", "Chillán", "Puente Alto", "Maipú", "La Florida"
-].sort();
+// Removing old COMUNAS_CHILE constant as it's now in chileData.ts
 
 export default function ExploraPage() {
   const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("recent");
+  const [regionFilter, setRegionFilter] = useState("all");
   const [cityFilter, setCityFilter] = useState("all");
   const [dbInventory, setDbInventory] = useState<TcgCardType[]>([]);
   const [dbAuctions, setDbAuctions] = useState<TcgCardType[]>([]);
@@ -167,6 +166,15 @@ export default function ExploraPage() {
     processedCards = processedCards.filter(c => c.game === filter);
   }
 
+  if (regionFilter !== "all") {
+    const selectedRegion = REGIONES_CHILE.find(r => r.name === regionFilter);
+    if (selectedRegion) {
+      processedCards = processedCards.filter((c: any) => 
+        selectedRegion.communes.includes(c.sellerCity)
+      );
+    }
+  }
+
   if (cityFilter !== "all") {
     processedCards = processedCards.filter((c: any) => c.sellerCity === cityFilter);
   }
@@ -209,10 +217,34 @@ export default function ExploraPage() {
           </div>
 
           <div className={styles.filterGroup}>
-            <label>Ciudad (Vendedor)</label>
-            <select value={cityFilter} onChange={(e) => setCityFilter(e.target.value)} className={styles.select}>
-              <option value="all">Todas las ciudades</option>
-              {COMUNAS_CHILE.map(comuna => (
+            <label><MapPin size={14} style={{ marginRight: '4px' }} /> Región</label>
+            <select 
+              value={regionFilter} 
+              onChange={(e) => {
+                setRegionFilter(e.target.value);
+                setCityFilter("all"); // Reset city when region changes
+              }} 
+              className={styles.select}
+            >
+              <option value="all">Todas las regiones</option>
+              {REGIONES_CHILE.map(region => (
+                <option key={region.name} value={region.name}>{region.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className={styles.filterGroup}>
+            <label>Ciudad / Comuna</label>
+            <select 
+              value={cityFilter} 
+              onChange={(e) => setCityFilter(e.target.value)} 
+              className={styles.select}
+              disabled={regionFilter === "all"}
+            >
+              <option value="all">
+                {regionFilter === "all" ? "Selecciona una región primero" : "Todas las ciudades"}
+              </option>
+              {regionFilter !== "all" && REGIONES_CHILE.find(r => r.name === regionFilter)?.communes.map(comuna => (
                 <option key={comuna} value={comuna}>{comuna}</option>
               ))}
             </select>

@@ -5,12 +5,12 @@ import Header from "@/components/Header/Header";
 import { doc, getDoc, updateDoc, setDoc, collection, getDocs, query, where, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
-import { 
-  Users, 
-  CreditCard, 
-  TrendingUp, 
-  Clock, 
-  Shield, 
+import {
+  Users,
+  CreditCard,
+  TrendingUp,
+  Clock,
+  Shield,
   LayoutDashboard,
   Bell,
   CheckCircle,
@@ -45,17 +45,17 @@ export default function AdminPage() {
         // 2. Fetch Users and Sales
         const usersSnap = await getDocs(collection(db, "users"));
         const salesSnap = await getDocs(collection(db, "sales"));
-        
+
         const allSales = salesSnap.docs.map(d => d.data());
         const totalVol = allSales.reduce((acc: number, curr: any) => acc + (curr.total || 0), 0);
         setTotalSales(totalVol);
-        
+
         const usersWithStats = usersSnap.docs.map(uDoc => {
           const uData = uDoc.data();
           const userSales = allSales.filter((s: any) => s.sellerId === uData.uid);
           const totalVolume = userSales.reduce((acc: number, curr: any) => acc + (curr.total || 0), 0);
           const salesCount = userSales.length;
-          
+
           return {
             id: uDoc.id,
             ...uData,
@@ -188,17 +188,17 @@ export default function AdminPage() {
         <div className={styles.card}>
           <div className={styles.cardHeader}>
             <Shield size={20} color="#ffd700" />
-            <h2 className={styles.sectionTitle}>Configuración Global</h2>
+            <h2 className={styles.sectionTitle}>Activación de Subasta</h2>
           </div>
-          
+
           <div className={styles.settingGroup}>
             <div className={styles.setting}>
               <div className={styles.settingInfo}>
                 <h3>Módulo de Subastas</h3>
                 <p>Habilita o deshabilita la participación en subastas en todo el sitio.</p>
               </div>
-              <button 
-                onClick={toggleAuctions} 
+              <button
+                onClick={toggleAuctions}
                 className={auctionsEnabled ? styles.btnOn : styles.btnOff}
               >
                 {loading ? "..." : (auctionsEnabled ? "MODO ON" : "MODO OFF")}
@@ -209,11 +209,11 @@ export default function AdminPage() {
 
         <div className={styles.card} style={{ marginTop: '2rem' }}>
           <div className={styles.cardHeader}>
-             <Clock size={20} color="#ff4444" />
-             <h2 className={styles.sectionTitle}>Solicitudes de Subasta</h2>
+            <Clock size={20} color="#ff4444" />
+            <h2 className={styles.sectionTitle}>Solicitudes de Subasta</h2>
           </div>
           <p className={styles.subtitle}>Autoriza o rechaza nuevas subastas enviadas por vendedores.</p>
-          
+
           {pendingAuctions.length === 0 ? (
             <p className={styles.emptyMsg}>No hay solicitudes pendientes.</p>
           ) : (
@@ -258,8 +258,8 @@ export default function AdminPage() {
 
         <div className={styles.card} style={{ marginTop: '2rem' }}>
           <div className={styles.cardHeader}>
-             <TrendingUp size={20} color="#00ff00" />
-             <h2 className={styles.sectionTitle}>Ranking de Vendedores</h2>
+            <TrendingUp size={20} color="#00ff00" />
+            <h2 className={styles.sectionTitle}>Ranking de Vendedores</h2>
           </div>
           <p className={styles.subtitle}>Usuarios registrados y su volumen de ventas histórico.</p>
 
