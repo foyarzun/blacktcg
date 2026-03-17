@@ -35,7 +35,7 @@
   background: rgba(5, 5, 5, 0.9);
   backdrop-filter: blur(25px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1rem 120px;
+  padding: 1rem calc(2rem + 280px); /* Aligned with ad sidebar + page padding */
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
@@ -131,8 +131,8 @@
 /* Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.2rem;
 }
 
 .loading {
@@ -140,12 +140,6 @@
   padding: 5rem;
   font-size: 1.2rem;
   color: #ffd700;
-}
-
-@media (max-width: 1600px) {
-  .adSidebar {
-    flex: 0 0 200px;
-  }
 }
 
 @media (max-width: 1400px) {
@@ -156,7 +150,7 @@
     padding: 1rem 2rem;
   }
   .grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
