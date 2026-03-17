@@ -123,7 +123,8 @@
   letter-spacing: 2px;
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  min-height: 85vh;
+  height: calc(100vh - 200px);
+  min-height: 600px;
   position: sticky;
   top: 180px; /* Aligned below Header + FilterBar */
   overflow: hidden;
@@ -132,16 +133,16 @@
 .contentArea {
   width: 750px;
   max-width: 750px;
-  overflow: hidden; /* Strict containment of cards */
+  /* Removed overflow hidden to see if items are still misbehaving, 
+     but tracks will be locked now */
 }
 
 /* Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.8rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
   width: 100%;
-  max-width: 750px;
 }
 
 .loading {
