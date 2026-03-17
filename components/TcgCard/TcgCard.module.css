@@ -1,7 +1,7 @@
 .perspective {
   perspective: 1000px;
-  width: 280px;
-  height: 400px;
+  width: 100%;
+  aspect-ratio: 1 / 1.4;
   cursor: pointer;
 }
 
