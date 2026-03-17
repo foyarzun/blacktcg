@@ -8,7 +8,8 @@ import { collection, addDoc, serverTimestamp, query, where, orderBy, limit, getD
 import { db } from "@/lib/firebase";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { searchCards, TcgSearchResult } from "@/lib/tcgApi";
-import { LayoutDashboard, Store, ClipboardList, Trash2, Tag, Clock, ShoppingBag } from "lucide-react";
+import { REGIONES_CHILE } from "@/lib/chileData";
+import { LayoutDashboard, Store, ClipboardList, Trash2, Tag, Clock, ShoppingBag, MapPin } from "lucide-react";
 import styles from "./Vendedor.module.css";
 
 const MOCK_SALES_DATA = [
@@ -48,6 +49,8 @@ export default function VendedorDashboard() {
     finish: "Normal",
     cardNumber: "",
     expansion: "",
+    region: "",
+    sellerCity: "",
   });
 
   // Real-time synchronization
@@ -134,6 +137,17 @@ export default function VendedorDashboard() {
     return () => listeners.forEach(unsub => unsub());
   }, [user]);
 
+  // Sync profile location initially
+  useEffect(() => {
+    if (userData && !formData.sellerCity) {
+      setFormData(prev => ({
+        ...prev,
+        sellerCity: userData.comuna || "Santiago",
+        region: userData.region || REGIONES_CHILE.find(r => r.communes.includes(userData.comuna))?.name || "Región Metropolitana de Santiago"
+      }));
+    }
+  }, [userData]);
+
   // Search effect
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -179,6 +193,8 @@ export default function VendedorDashboard() {
       finish: listing.finish || "Normal",
       cardNumber: listing.cardNumber || "",
       expansion: listing.expansion || "",
+      region: listing.region || "",
+      sellerCity: listing.sellerCity || "",
     });
     setSelectedCard({
       id: listing.id,
@@ -206,6 +222,8 @@ export default function VendedorDashboard() {
       finish: "Normal",
       cardNumber: "",
       expansion: "",
+      region: userData?.region || "",
+      sellerCity: userData?.comuna || "",
     });
     setSelectedCard(null);
   };
@@ -282,7 +300,8 @@ export default function VendedorDashboard() {
         sellerName: (userData?.nombre && userData?.apellido) 
           ? `${userData.nombre} ${userData.apellido}` 
           : (user.displayName || "Vendedor de Prueba"),
-        sellerCity: userData?.comuna || "Santiago",
+        sellerCity: formData.sellerCity || userData?.comuna || "Santiago",
+        region: formData.region || userData?.region || "",
         createdAt: serverTimestamp(),
         status: "active",
       };
@@ -372,7 +391,22 @@ export default function VendedorDashboard() {
           }
           alert("¡Publicación creada con éxito!");
         }
-        setFormData({ cardName: "", game: "pokemon", price: "", stock: "1", condition: "Near Mint", listingType: "direct", durationHours: "24", imageUrl: "", language: "Español", finish: "Normal", cardNumber: "", expansion: "" });
+        setFormData({ 
+          cardName: "", 
+          game: "pokemon", 
+          price: "", 
+          stock: "1", 
+          condition: "Near Mint", 
+          listingType: "direct", 
+          durationHours: "24", 
+          imageUrl: "", 
+          language: "Español", 
+          finish: "Normal", 
+          cardNumber: "", 
+          expansion: "",
+          region: userData?.region || "",
+          sellerCity: userData?.comuna || ""
+        });
         setSelectedCard(null);
       }
     } catch (error) {
@@ -605,6 +639,36 @@ export default function VendedorDashboard() {
                           </select>
                         </div>
                       )}
+                    </div>
+
+                    <div className={styles.row}>
+                      <div className={styles.formGroup}>
+                        <label className={styles.label}><MapPin size={14} /> Región</label>
+                        <select 
+                          className={styles.select}
+                          value={formData.region}
+                          onChange={(e) => setFormData({...formData, region: e.target.value, sellerCity: ""})}
+                          required
+                        >
+                          <option value="">Selecciona región</option>
+                          {REGIONES_CHILE.map(r => <option key={r.name} value={r.name}>{r.name}</option>)}
+                        </select>
+                      </div>
+                      <div className={styles.formGroup}>
+                        <label className={styles.label}>Comuna / Ciudad</label>
+                        <select 
+                          className={styles.select}
+                          value={formData.sellerCity}
+                          onChange={(e) => setFormData({...formData, sellerCity: e.target.value})}
+                          required
+                          disabled={!formData.region}
+                        >
+                          <option value="">{formData.region ? "Selecciona comuna" : "Primero elige región"}</option>
+                          {formData.region && REGIONES_CHILE.find(r => r.name === formData.region)?.communes.map(c => (
+                            <option key={c} value={c}>{c}</option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
 
                     <div className={styles.btnGroup}>

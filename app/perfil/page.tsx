@@ -8,11 +8,7 @@ import { db } from "@/lib/firebase";
 import { User, MapPin, Landmark, Save, ShoppingBag } from "lucide-react";
 import styles from "./Perfil.module.css";
 
-const COMUNAS_CHILE = [
-  "Santiago", "Las Condes", "Providencia", "Viña del Mar", "Valparaíso",
-  "Concepción", "Antofagasta", "La Serena", "Temuco", "Puerto Montt", "Puerto Varas",
-  "Rancagua", "Talca", "Arica", "Iquique", "Chillán", "Puente Alto", "Maipú", "La Florida"
-].sort();
+import { REGIONES_CHILE } from "@/lib/chileData";
 
 const BANCOS_CHILE = [
   "Banco Estado", "Banco de Chile", "Santander", "BCI", "Scotiabank",
@@ -35,6 +31,7 @@ export default function PerfilPage() {
     calle: "",
     numero: "",
     comuna: "",
+    region: "",
     banco: "",
     tipoCuenta: "",
     numeroCuenta: "",
@@ -50,6 +47,7 @@ export default function PerfilPage() {
         calle: userData.calle || "",
         numero: userData.numero || "",
         comuna: userData.comuna || "",
+        region: userData.region || REGIONES_CHILE.find(r => r.communes.includes(userData.comuna))?.name || "",
         banco: userData.banco || "",
         tipoCuenta: userData.tipoCuenta || "",
         numeroCuenta: userData.numeroCuenta || "",
@@ -180,15 +178,32 @@ export default function PerfilPage() {
                     />
                   </div>
                   <div className={styles.formGroup}>
-                    <label className={styles.label}>Comuna</label>
+                    <label className={styles.label}>Región</label>
+                    <select
+                      className={styles.select}
+                      value={formData.region}
+                      onChange={(e) => setFormData({ ...formData, region: e.target.value, comuna: "" })}
+                      required
+                    >
+                      <option value="">Selecciona una región</option>
+                      {REGIONES_CHILE.map(r => <option key={r.name} value={r.name}>{r.name}</option>)}
+                    </select>
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>Comuna / Ciudad</label>
                     <select
                       className={styles.select}
                       value={formData.comuna}
                       onChange={(e) => setFormData({ ...formData, comuna: e.target.value })}
                       required
+                      disabled={!formData.region}
                     >
-                      <option value="">Selecciona una comuna</option>
-                      {COMUNAS_CHILE.map(c => <option key={c} value={c}>{c}</option>)}
+                      <option value="">
+                        {!formData.region ? "Selecciona región primero" : "Selecciona una comuna"}
+                      </option>
+                      {formData.region && REGIONES_CHILE.find(r => r.name === formData.region)?.communes.map(c => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
