@@ -10,7 +10,11 @@ import { useCart } from "@/context/CartContext";
 import { ShoppingCart } from "lucide-react";
 import styles from "./Header.module.css";
 
-export default function Header() {
+interface HeaderProps {
+  isSticky?: boolean;
+}
+
+export default function Header({ isSticky = true }: HeaderProps) {
   const { user, userData, isAdmin, login, logout } = useAuth();
   const { cart } = useCart();
   const [auctionsEnabled, setAuctionsEnabled] = useState(false);
@@ -45,7 +49,7 @@ export default function Header() {
   };
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${!isSticky ? styles.relative : ''}`}>
       <nav className={styles.nav}>
         <Link href="/" className={styles.logoContainer}>
           <Image

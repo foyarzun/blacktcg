@@ -135,14 +135,12 @@ function Explora2Content() {
 
   return (
     <main className={styles.main}>
-      <Header />
+      <Header isSticky={false} />
 
       <div className={styles.container}>
-        <div className={styles.topSpacer}>
-          <div className={styles.headerSection}>
-            <h1 className={styles.pageTitle}>Explora el Catálogo</h1>
-            <p className={styles.resultCount}>{processedCards.length} cartas disponibles para ti</p>
-          </div>
+        <div className={styles.headerSection} style={{ paddingTop: '2rem' }}>
+          <h1 className={styles.pageTitle}>Explora el Catálogo</h1>
+          <p className={styles.resultCount}>{processedCards.length} cartas disponibles para ti</p>
         </div>
 
         <div className={styles.filterBar}>

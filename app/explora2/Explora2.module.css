@@ -35,21 +35,20 @@
   background: rgba(5, 5, 5, 0.9);
   backdrop-filter: blur(25px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1rem calc(2rem + 280px); /* Aligned with ad sidebar + page padding */
+  padding: 1.5rem 2rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
   align-items: flex-end;
-  position: fixed;
-  top: 77px;
-  left: 0;
-  right: 0;
+  position: sticky;
+  top: 0;
   z-index: 100;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  margin-top: 2rem;
 }
 
 .topSpacer {
-  height: 200px; /* Space for Fixed Header + FilterBar + Padding */
+  height: 0;
 }
 
 .filterGroup {
@@ -121,7 +120,7 @@
   text-orientation: mixed;
   min-height: 80vh;
   position: sticky;
-  top: 180px;
+  top: 100px; /* Aligned below sticky filterBar */
 }
 
 .contentArea {
