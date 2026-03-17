@@ -12,9 +12,10 @@ import styles from "./Header.module.css";
 
 interface HeaderProps {
   isSticky?: boolean;
+  isFixed?: boolean;
 }
 
-export default function Header({ isSticky = true }: HeaderProps) {
+export default function Header({ isSticky = true, isFixed = false }: HeaderProps) {
   const { user, userData, isAdmin, login, logout } = useAuth();
   const { cart } = useCart();
   const [auctionsEnabled, setAuctionsEnabled] = useState(false);
@@ -49,7 +50,7 @@ export default function Header({ isSticky = true }: HeaderProps) {
   };
 
   return (
-    <header className={`${styles.header} ${!isSticky ? styles.relative : ''}`}>
+    <header className={`${styles.header} ${!isSticky ? styles.relative : ''} ${isFixed ? styles.fixed : ''}`}>
       <nav className={styles.nav}>
         <Link href="/" className={styles.logoContainer}>
           <Image

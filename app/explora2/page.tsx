@@ -135,7 +135,7 @@ function Explora2Content() {
 
   return (
     <main className={styles.main}>
-      <Header />
+      <Header isFixed={true} />
       
       <div className={styles.filterBar}>
         <div className={styles.filterGroup}>
