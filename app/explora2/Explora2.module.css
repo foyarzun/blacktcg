@@ -32,19 +32,21 @@
 
 /* Horizontal Filters */
 .filterBar {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 1.5rem;
-  border-radius: 20px;
+  background: rgba(5, 5, 5, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 2rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
   align-items: flex-end;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   position: sticky;
-  top: 80px;
+  top: 77px; /* Matches Header height + border */
   z-index: 100;
+  width: calc(100% + 4rem);
+  margin-left: -2rem;
+  margin-right: -2rem;
 }
 
 .filterGroup {
@@ -95,8 +97,8 @@
 /* Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
 }
 
 .loading {
@@ -106,9 +108,18 @@
   color: #ffd700;
 }
 
+@media (max-width: 1280px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @media (max-width: 1024px) {
   .filterBar {
     top: 70px;
+  }
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
