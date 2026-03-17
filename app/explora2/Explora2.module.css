@@ -101,8 +101,8 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 0 2rem;
-  gap: 2rem;
+  padding: 0 1rem;
+  gap: 1.5rem;
   margin-top: 15rem; /* Increased to clear both Header + FilterBar */
 }
 
@@ -129,8 +129,8 @@
 }
 
 .contentArea {
-  width: 950px; /* Reduced width to make 5 columns even smaller */
-  max-width: 950px;
+  width: 850px; /* Reduced width to make 5 columns even smaller and fit sidebars */
+  max-width: 850px;
   flex: 0 0 auto;
 }
 
