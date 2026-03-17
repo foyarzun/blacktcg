@@ -138,9 +138,11 @@ function Explora2Content() {
       <Header />
 
       <div className={styles.container}>
-        <div className={styles.headerSection}>
-          <h1 className={styles.pageTitle}>Explora el Catálogo</h1>
-          <p className={styles.resultCount}>{processedCards.length} cartas disponibles para ti</p>
+        <div className={styles.topSpacer}>
+          <div className={styles.headerSection}>
+            <h1 className={styles.pageTitle}>Explora el Catálogo</h1>
+            <p className={styles.resultCount}>{processedCards.length} cartas disponibles para ti</p>
+          </div>
         </div>
 
         <div className={styles.filterBar}>
@@ -200,15 +202,27 @@ function Explora2Content() {
           </div>
         </div>
 
-        {loading ? (
-          <div className={styles.loading}>Sincronizando catálogo...</div>
-        ) : (
-          <div className={styles.grid}>
-            {processedCards.map(card => (
-              <TcgCard key={card.id} card={card} />
-            ))}
+        <div className={styles.pageBodyLayout}>
+          <aside className={styles.adSidebar}>
+            Publicidad / Auspiciadores
+          </aside>
+
+          <div className={styles.contentArea}>
+            {loading ? (
+              <div className={styles.loading}>Sincronizando catálogo...</div>
+            ) : (
+              <div className={styles.grid}>
+                {processedCards.map(card => (
+                  <TcgCard key={card.id} card={card} />
+                ))}
+              </div>
+            )}
           </div>
-        )}
+
+          <aside className={styles.adSidebar}>
+            Publicidad / Auspiciadores
+          </aside>
+        </div>
       </div>
     </main>
   );
