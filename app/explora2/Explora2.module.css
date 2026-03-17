@@ -98,12 +98,13 @@
 
 /* Body Layout with Ads */
 .pageBodyLayout {
-  display: flex;
+  display: grid;
+  grid-template-columns: 280px 850px 280px;
   justify-content: center;
   width: 100%;
   padding: 0 1rem;
   gap: 1.5rem;
-  margin-top: 15rem; /* Increased to clear both Header + FilterBar */
+  margin-top: 15rem; /* Space for fixed Header + FilterBar */
 }
 
 .adSidebar {
@@ -129,9 +130,8 @@
 }
 
 .contentArea {
-  width: 850px; /* Reduced width to make 5 columns even smaller and fit sidebars */
+  width: 100%; /* Fills the 850px grid track */
   max-width: 850px;
-  flex: 0 0 auto;
 }
 
 /* Grid */
