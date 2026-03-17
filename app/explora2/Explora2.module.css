@@ -106,7 +106,7 @@
 }
 
 .adSidebar {
-  flex: 0 0 180px;
+  flex: 0 0 280px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px dashed rgba(255, 255, 255, 0.1);
   border-radius: 12px;
@@ -131,7 +131,7 @@
 /* Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 1rem;
 }
 
@@ -142,12 +142,21 @@
   color: #ffd700;
 }
 
+@media (max-width: 1600px) {
+  .adSidebar {
+    flex: 0 0 200px;
+  }
+}
+
 @media (max-width: 1400px) {
   .adSidebar {
     display: none;
   }
   .filterBar {
     padding: 1rem 2rem;
+  }
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
