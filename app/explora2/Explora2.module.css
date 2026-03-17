@@ -34,16 +34,16 @@
 .filterBar {
   background: #050505;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1.2rem 2rem;
+  padding: 1rem 2rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
   align-items: flex-end;
   position: fixed;
-  top: 0;
+  top: 76px; /* Just below the Header (76px height) */
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 900;
   box-shadow: 0 10px 30px rgba(0,0,0,0.8);
 }
 
@@ -103,7 +103,7 @@
   width: 100%;
   padding: 0 2rem;
   gap: 2rem;
-  margin-top: 10rem; /* Space for the fixed filterBar + Page Title */
+  margin-top: 15rem; /* Increased to clear both Header + FilterBar */
 }
 
 .adSidebar {
@@ -124,13 +124,13 @@
   text-orientation: mixed;
   min-height: 85vh;
   position: sticky;
-  top: 100px;
+  top: 180px; /* Aligned below Header + FilterBar */
   overflow: hidden;
 }
 
 .contentArea {
-  width: 1000px; /* Force center width to keep cards small */
-  max-width: 1000px;
+  width: 950px; /* Reduced width to make 5 columns even smaller */
+  max-width: 950px;
   flex: 0 0 auto;
 }
 

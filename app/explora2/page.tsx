@@ -135,7 +135,7 @@ function Explora2Content() {
 
   return (
     <main className={styles.main}>
-      <Header isSticky={false} />
+      <Header />
       
       <div className={styles.filterBar}>
         <div className={styles.filterGroup}>
