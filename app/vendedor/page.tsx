@@ -8,8 +8,9 @@ import { collection, addDoc, serverTimestamp, query, where, orderBy, limit, getD
 import { db } from "@/lib/firebase";
 import { searchCards, TcgSearchResult } from "@/lib/tcgApi";
 import { REGIONES_CHILE } from "@/lib/chileData";
-import { LayoutDashboard, Store, ClipboardList, Trash2, Tag, Clock, ShoppingBag, MapPin } from "lucide-react";
+import { LayoutDashboard, Store, ClipboardList, Trash2, Tag, Clock, ShoppingBag, MapPin, Camera } from "lucide-react";
 import styles from "./Vendedor.module.css";
+import ScannerModal from "./ScannerModal";
 
 
 export default function VendedorDashboard() {
@@ -25,6 +26,8 @@ export default function VendedorDashboard() {
   const [auctionsEnabled, setAuctionsEnabled] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingType, setEditingType] = useState<string | null>(null);
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
+  const [refPrice, setRefPrice] = useState<number | null>(null);
 
   const [formData, setFormData] = useState({
     cardName: "",
@@ -163,6 +166,19 @@ export default function VendedorDashboard() {
       cardNumber: card.id,
       expansion: card.set || "",
     });
+    
+    // Automatic reference price calculation (CLP ~950)
+    if (card.price && card.price !== "TBD" && card.price !== "0.00") {
+      const usdPrice = parseFloat(card.price);
+      if (!isNaN(usdPrice)) {
+         setRefPrice(Math.round(usdPrice * 950));
+      } else {
+         setRefPrice(null);
+      }
+    } else {
+      setRefPrice(null);
+    }
+    
     setSearchQuery("");
     setSearchResults([]);
   };
@@ -489,12 +505,20 @@ export default function VendedorDashboard() {
                       <label className={styles.label}>Buscar Carta</label>
                       <div className={styles.searchWrapper}>
                         <input 
-                          className={styles.input}
+                          className={`${styles.input} ${styles.inputWithIcon}`}
                           type="text" 
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                           placeholder="Nombre de la carta..." 
                         />
+                        <button 
+                          type="button" 
+                          className={styles.scanIconBtn}
+                          onClick={() => setIsScannerOpen(true)}
+                          title="Escanear Carta con Cámara"
+                        >
+                          <Camera size={20} />
+                        </button>
                         {isSearching && <span className={styles.searchingSpin}>🔍</span>}
                         {searchResults.length > 0 && (
                           <div className={styles.searchResults}>
@@ -581,14 +605,21 @@ export default function VendedorDashboard() {
                     <div className={styles.row}>
                       <div className={styles.formGroup}>
                         <label className={styles.label}>Precio (CLP)</label>
-                        <input 
-                          className={styles.input}
-                          type="number"
-                          value={formData.price}
-                          onChange={(e) => setFormData({...formData, price: e.target.value})}
-                          placeholder="0"
-                          step="1"
-                        />
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                          <input 
+                            className={styles.input}
+                            type="number"
+                            value={formData.price}
+                            onChange={(e) => setFormData({...formData, price: e.target.value})}
+                            placeholder="0"
+                            step="1"
+                          />
+                          {refPrice && (
+                            <span style={{ fontSize: '0.7rem', color: '#ffd700', fontStyle: 'italic' }}>
+                              Precio Referencia: ~${refPrice.toLocaleString()} (API)
+                            </span>
+                          )}
+                        </div>
                       </div>
                       {(formData.listingType === "auction" || editingType === "Subasta") && (
                         <div className={styles.formGroup}>
@@ -754,6 +785,15 @@ export default function VendedorDashboard() {
           </div>
         )}
       </div>
+
+      {isScannerOpen && (
+        <ScannerModal 
+          onClose={() => setIsScannerOpen(false)} 
+          onScanResult={(text) => {
+            setSearchQuery(text);
+          }} 
+        />
+      )}
     </main>
   );
 }

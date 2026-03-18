@@ -196,6 +196,31 @@
 
 .searchWrapper {
   position: relative;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.inputWithIcon {
+  flex: 1;
+}
+
+.scanIconBtn {
+  background: #111;
+  border: 1px solid #333;
+  color: #ffd700;
+  padding: 0 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.scanIconBtn:hover {
+  background: #222;
+  border-color: #ffd700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
 }
 
 .searchingSpin {

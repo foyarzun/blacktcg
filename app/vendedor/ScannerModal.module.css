@@ -1,0 +1,131 @@
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(10px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal {
+  background: #050505;
+  border: 1px solid #222;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+}
+
+.header {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #111;
+}
+
+.header h3 {
+  font-size: 1rem;
+  color: #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.closeBtn:hover {
+  color: #fff;
+}
+
+.viewfinder {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: #000;
+  width: 100%;
+  overflow: hidden;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hud {
+  position: absolute;
+  top: 15%; left: 10%; right: 10%; bottom: 15%;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.scannerLine {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 2px;
+  background: #ffd700;
+  box-shadow: 0 0 15px #ffd700;
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+  from { top: 0; }
+  to { top: 100%; }
+}
+
+.footer {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.status {
+  font-size: 0.85rem;
+  color: #888;
+  font-family: monospace;
+}
+
+.captureBtn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #ffd700;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.captureBtn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(255, 215, 0, 0.1);
+  border-top-color: #ffd700;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

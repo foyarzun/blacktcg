@@ -5,6 +5,7 @@ export interface TcgSearchResult {
   set?: string;
   rarity?: string;
   game: string;
+  price?: string;
 }
 
 export const searchCards = async (game: string, query: string): Promise<TcgSearchResult[]> => {
@@ -21,7 +22,8 @@ export const searchCards = async (game: string, query: string): Promise<TcgSearc
           id: card.id,
           name: card.name,
           image: `${card.image}/low.jpg`,
-          game: "pokemon"
+          game: "pokemon",
+          price: "TBD" // TCGdex doesn't provide price in the list search, would need detail fetch
         }));
       }
 
@@ -36,7 +38,8 @@ export const searchCards = async (game: string, query: string): Promise<TcgSearc
           image: card.image_uris?.normal || card.card_faces?.[0]?.image_uris?.normal,
           set: card.set_name,
           rarity: card.rarity,
-          game: "mtg"
+          game: "mtg",
+          price: card.prices?.usd || card.prices?.usd_foil || "0.00"
         }));
       }
 
@@ -51,7 +54,8 @@ export const searchCards = async (game: string, query: string): Promise<TcgSearc
           image: card.card_images[0].image_url,
           set: card.card_sets?.[0]?.set_name,
           rarity: card.card_sets?.[0]?.set_rarity,
-          game: "yugioh"
+          game: "yugioh",
+          price: card.card_prices?.[0]?.tcgplayer_price || "0.00"
         }));
       }
 
