@@ -167,56 +167,60 @@
 @media (max-width: 1200px) {
   .pageBodyLayout {
     grid-template-columns: 1fr;
-    margin-top: 18rem; /* Space for potentially wrapping filters */
+    margin-top: 15rem; /* Standard desktop space */
   }
 
   .adSidebar {
-    display: none;
+    display: none !important;
   }
 
   .contentArea {
+    width: 100%;
     padding: 0 1.5rem;
   }
 
   .grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
+  .pageBodyLayout {
+    margin-top: 14rem;
+  }
+  
+  .pageTitle {
+    font-size: 2.2rem;
+  }
+
   .filterBar {
     padding: 1rem;
-    gap: 1rem;
-    top: 60px; /* Header is slightly shorter on mobile */
-  }
-  
-  .pageTitle {
-    font-size: 2.5rem;
+    gap: 1.2rem;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .pageTitle {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   
   .filterBar {
-    position: relative; /* Not fixed on very small screens to save space */
+    position: relative; /* Save space on mobile */
     top: 0;
-    padding: 1rem;
-    gap: 1rem;
+    margin-bottom: 2rem;
     flex-direction: column;
     align-items: stretch;
-    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+    padding: 1.2rem;
+    gap: 1.5rem;
   }
 
   .pageBodyLayout {
-    margin-top: 2rem; /* Filters are now relative, only need header space */
+    margin-top: 1rem;
   }
   
   .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.8rem;
   }
 
   .filterGroup {
@@ -229,17 +233,8 @@
   }
 }
 
-@media (max-width: 480px) {
-  .pageTitle {
-    font-size: 1.8rem;
-  }
-
+@media (max-width: 400px) {
   .grid {
-    grid-template-columns: 1fr; /* Single column on very small screens */
-    gap: 1.2rem;
-  }
-
-  .contentArea {
-    padding: 0 1rem;
+    grid-template-columns: 1fr !important;
   }
 }
