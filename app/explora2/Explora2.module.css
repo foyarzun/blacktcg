@@ -33,18 +33,18 @@
 /* Horizontal Filters */
 .filterBar {
   background: #050505;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1rem 2rem;
+  border-bottom: 2px solid rgba(255, 215, 0, 0.1);
+  padding: 1.2rem 3rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 2rem;
   align-items: flex-end;
   position: fixed;
   top: 76px; /* Just below the Header (76px height) */
   left: 0;
   right: 0;
   z-index: 900;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.9);
 }
 
 .topSpacer {
@@ -99,11 +99,10 @@
 /* Body Layout with Ads */
 .pageBodyLayout {
   display: grid;
-  grid-template-columns: 280px 750px 280px;
-  justify-content: center;
+  grid-template-columns: 280px 1fr 280px;
   width: 100%;
-  padding: 0 0.5rem;
-  gap: 1rem;
+  padding: 0;
+  gap: 0;
   margin-top: 15rem; /* Space for fixed Header + FilterBar */
 }
 
@@ -111,9 +110,10 @@
   width: 280px;
   min-width: 280px;
   max-width: 280px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  background: #080808;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,17 +131,16 @@
 }
 
 .contentArea {
-  width: 750px;
-  max-width: 750px;
-  /* Removed overflow hidden to see if items are still misbehaving, 
-     but tracks will be locked now */
+  width: 100%;
+  max-width: none;
+  padding: 0 2rem;
 }
 
 /* Grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.5rem;
   width: 100%;
 }
 
