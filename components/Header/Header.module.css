@@ -9,6 +9,12 @@
   color: #fff;
 }
 
+@media (max-width: 900px) {
+  .header {
+    padding: 0.2rem 1rem;
+  }
+}
+
 .relative {
   position: relative !important;
   top: auto !important;
@@ -29,6 +35,12 @@
   align-items: center;
   justify-content: space-between;
   height: 60px;
+}
+
+@media (max-width: 900px) {
+  .nav {
+    height: 50px;
+  }
 }
 
 .logoLink {
@@ -158,10 +170,124 @@
   box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
 }
 
-.actions {
+.rightSection {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+}
+
+.desktopAuth {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .menu, .desktopAuth {
+    display: none;
+  }
+}
+
+.menuToggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 1200;
+}
+
+@media (max-width: 900px) {
+  .menuToggle {
+    display: block;
+  }
+}
+
+.mobileOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 1150;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileOverlayOpen {
+  transform: translateX(0);
+}
+
+.mobileNav {
+  padding: 80px 2rem 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileUserHeader {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
+}
+
+.mobileUserName {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffd700;
+  margin-bottom: 0.5rem;
+}
+
+.mobileLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mobileLinks a {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.mobileLinks a:hover {
+  color: #ffd700;
+}
+
+.mobileFooter {
+  margin-top: auto;
+  padding-top: 2rem;
+}
+
+.logoutBtnMobile, .loginBtnMobile {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.logoutBtnMobile {
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid #ff4444;
+  color: #ff4444;
+}
+
+.loginBtnMobile {
+  background: #fff;
+  color: #000;
+  border: none;
 }
 
 .cartIcon {

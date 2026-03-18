@@ -165,36 +165,81 @@
 }
 
 @media (max-width: 1200px) {
+  .pageBodyLayout {
+    grid-template-columns: 1fr;
+    margin-top: 18rem; /* Space for potentially wrapping filters */
+  }
+
   .adSidebar {
     display: none;
+  }
+
+  .contentArea {
+    padding: 0 1.5rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 1024px) {
   .filterBar {
-    padding: 1rem 2rem;
+    padding: 1rem;
+    gap: 1rem;
+    top: 60px; /* Header is slightly shorter on mobile */
+  }
+  
+  .pageTitle {
+    font-size: 2.5rem;
   }
 }
 
 @media (max-width: 768px) {
   .pageTitle {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
   
   .filterBar {
-    position: static;
+    position: relative; /* Not fixed on very small screens to save space */
+    top: 0;
+    padding: 1rem;
+    gap: 1rem;
     flex-direction: column;
     align-items: stretch;
-    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+  }
+
+  .pageBodyLayout {
+    margin-top: 2rem; /* Filters are now relative, only need header space */
   }
   
-  .topSpacer {
-    height: auto;
-    padding-top: 2rem;
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .filterGroup {
+    min-width: 100%;
+  }
+
+  .headerSection {
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageTitle {
+    font-size: 1.8rem;
   }
 
   .grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
+    grid-template-columns: 1fr; /* Single column on very small screens */
+    gap: 1.2rem;
+  }
+
+  .contentArea {
+    padding: 0 1rem;
   }
 }
