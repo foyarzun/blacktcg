@@ -93,9 +93,9 @@ export default function Home() {
             <div className={styles.sliderHorizontal}>
               {latestCards.length > 0 ? (
                 latestCards.map((card, index) => (
-                  <Link 
+                  <Link
                     href={`/explora/detalle?id=${card.id}`}
-                    key={card.id} 
+                    key={card.id}
                     className={`${styles.miniSlide} ${currentSlide === index ? styles.activeMiniSlide : ''}`}
                   >
                     <img src={card.imageUrl || "https://images.pokemontcg.io/base1/4_hires.png"} alt={card.cardName} className={styles.miniImg} />
@@ -143,9 +143,9 @@ export default function Home() {
             { name: "One Piece Card Game", id: "onepiece", color: "#e91e63", bg: "rgba(233, 30, 99, 0.1)" },
             { name: "Legends of Runeterra", id: "lor", color: "#9c27b0", bg: "rgba(156, 39, 176, 0.1)" }
           ].map((game) => (
-            <Link 
-              key={game.id} 
-              href={`/explora2?game=${game.id}`} 
+            <Link
+              key={game.id}
+              href={`/explora2?game=${game.id}`}
               className={styles.tcgBox}
               style={{ borderColor: game.color, backgroundColor: game.bg }}
             >
@@ -156,7 +156,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Newsletter Section */}
+      {/* Newsletter Section 
       <section className={styles.newsletter}>
         <div className={styles.newsletterContent}>
           <h2>Únete a la Élite</h2>
@@ -178,7 +178,7 @@ export default function Home() {
             <div className={styles.successMsg}>✨ ¡Ya estás en la lista! Revisa tu correo pronto.</div>
           )}
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }
