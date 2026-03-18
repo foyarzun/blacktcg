@@ -1,7 +1,19 @@
+:global(html),
+:global(body) {
+  background-color: #050505 !important;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .main {
   min-height: 100vh;
   background-color: #050505;
   color: #fff;
+  width: 100vw;
+  position: relative;
+  left: 0;
 }
 
 .container {
@@ -19,10 +31,11 @@
   font-size: 3rem;
   font-weight: 900;
   margin-bottom: 0.5rem;
-  background: linear-gradient(90deg, #fff, #ffd700);
+  background: linear-gradient(90deg, #ffd700, #fff, #ffd700);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2));
 }
 
 .resultCount {
