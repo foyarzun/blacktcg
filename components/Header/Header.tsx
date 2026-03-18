@@ -69,7 +69,7 @@ export default function Header({ isSticky = true, isFixed = false }: HeaderProps
             <>
               <Link href="/admin">Panel Admin</Link>
               <Link href="/vendedor">Ventas Globales</Link>
-              <Link href="/explora2">Marketplace</Link>
+              <Link href="/explora2">Explorar</Link>
               {auctionsEnabled && <Link href="/subastas" className={styles.auctionLink}>Subastas</Link>}
             </>
           ) : userData?.role === "seller" ? (
@@ -93,7 +93,7 @@ export default function Header({ isSticky = true, isFixed = false }: HeaderProps
             <ShoppingCart size={20} />
             {cart.length > 0 && <span className={styles.cartCount}>{cart.length}</span>}
           </Link>
-          
+
           <div className={styles.desktopAuth}>
             {user ? (
               <div className={styles.userSection}>
@@ -115,8 +115,8 @@ export default function Header({ isSticky = true, isFixed = false }: HeaderProps
             )}
           </div>
 
-          <button 
-            className={styles.menuToggle} 
+          <button
+            className={styles.menuToggle}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -132,7 +132,7 @@ export default function Header({ isSticky = true, isFixed = false }: HeaderProps
             <div className={styles.mobileUserHeader}>
               <div className={styles.mobileUserInfo}>
                 <p className={styles.mobileUserName}>{user.displayName || user.email}</p>
-                <div 
+                <div
                   className={`${styles.roleBadge} ${userData?.role === 'admin' ? styles.adminBadge : ''}`}
                   onClick={handleRoleSwitch}
                 >

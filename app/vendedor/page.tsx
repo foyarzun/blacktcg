@@ -6,21 +6,11 @@ import Header from "@/components/Header/Header";
 import { useAuth } from "@/context/AuthContext";
 import { collection, addDoc, serverTimestamp, query, where, orderBy, limit, getDocs, deleteDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { searchCards, TcgSearchResult } from "@/lib/tcgApi";
 import { REGIONES_CHILE } from "@/lib/chileData";
 import { LayoutDashboard, Store, ClipboardList, Trash2, Tag, Clock, ShoppingBag, MapPin } from "lucide-react";
 import styles from "./Vendedor.module.css";
 
-const MOCK_SALES_DATA = [
-  { name: "Lun", ventas: 1200 },
-  { name: "Mar", ventas: 1900 },
-  { name: "Mie", ventas: 1500 },
-  { name: "Jue", ventas: 2100 },
-  { name: "Vie", ventas: 2800 },
-  { name: "Sab", ventas: 3500 },
-  { name: "Dom", ventas: 3200 },
-];
 
 export default function VendedorDashboard() {
   const { user, userData, loading: authLoading } = useAuth();
@@ -445,33 +435,9 @@ export default function VendedorDashboard() {
 
         {activeTab === "dashboard" ? (
           <div className={styles.grid}>
-            {/* Metrics Section */}
-            <div className={styles.metricsCard}>
-              <h3 className={styles.cardTitle}>Ventas de la Semana ($)</h3>
-              <div className={styles.chartContainer}>
-                <ResponsiveContainer width="100%" height={250}>
-                  <BarChart data={MOCK_SALES_DATA}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
-                    <XAxis dataKey="name" stroke="#666" fontSize={12} />
-                    <YAxis stroke="#666" fontSize={12} />
-                    <Tooltip 
-                      contentStyle={{ background: "#111", border: "1px solid #333" }}
-                      cursor={{ fill: "rgba(255,255,255,0.05)" }}
-                    />
-                    <Bar dataKey="ventas" fill="#ffd700" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-              <div className={styles.summaryStats}>
-                 <div className={styles.statLine}>
-                    <span>Total Ventas Esperadas</span>
-                    <strong className={styles.statHighlight}>$18,200</strong>
-                 </div>
-              </div>
-            </div>
 
             {/* Upload Section */}
-            <div className={styles.formCard}>
+            <div className={styles.formCard} style={{ gridColumn: 'span 2' }}>
               {!isProfileComplete ? (
                 <div className={styles.completeProfileWarning}>
                   <h3 className={styles.cardTitle}>⚠️ Perfil Incompleto</h3>

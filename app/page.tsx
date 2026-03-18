@@ -75,7 +75,7 @@ export default function Home() {
         <div className={styles.heroOverlay}></div>
         <div className={styles.heroContent}>
           <h1 className={styles.title}>BLACK TCG</h1>
-          <p className={styles.subtitle}>El destino premium para coleccionistas.</p>
+          <p className={styles.subtitle}>La elegancia de tu colección...</p>
           <div className={styles.ctaGroup}>
             <Link href="/explora2" className={styles.primaryBtn}>Explorar</Link>
             <Link href="/vendedor" className={styles.secondaryBtn}>Vender</Link>
