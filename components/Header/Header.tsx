@@ -7,7 +7,7 @@ import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
-import { ShoppingCart, Menu, X, ChevronRight } from "lucide-react";
+import { ShoppingCart, Menu, X, ChevronRight, Camera } from "lucide-react";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
@@ -70,6 +70,7 @@ export default function Header({ isSticky = true, isFixed = false }: HeaderProps
               <Link href="/admin">Panel Admin</Link>
               <Link href="/vendedor">Ventas Globales</Link>
               <Link href="/explora2">Explorar</Link>
+              <Link href="/scan" className={styles.scanHeaderLink}><Camera size={18} /> Escanear</Link>
               {auctionsEnabled && <Link href="/subastas" className={styles.auctionLink}>Subastas</Link>}
             </>
           ) : userData?.role === "seller" ? (
@@ -147,7 +148,10 @@ export default function Header({ isSticky = true, isFixed = false }: HeaderProps
               <>
                 <Link href="/admin" onClick={() => setIsMenuOpen(false)}>Panel Admin <ChevronRight size={16} /></Link>
                 <Link href="/vendedor" onClick={() => setIsMenuOpen(false)}>Ventas Globales <ChevronRight size={16} /></Link>
-                <Link href="/explora2" onClick={() => setIsMenuOpen(false)}>Marketplace <ChevronRight size={16} /></Link>
+                <Link href="/explora2" onClick={() => setIsMenuOpen(false)}>Explorar <ChevronRight size={16} /></Link>
+                <Link href="/scan" onClick={() => setIsMenuOpen(false)} style={{ color: '#ffd700', fontWeight: 'bold' }}>
+                  <Camera size={16} style={{ verticalAlign: 'middle', marginRight: '8px' }} /> Escanear Carta <ChevronRight size={16} />
+                </Link>
                 {auctionsEnabled && <Link href="/subastas" onClick={() => setIsMenuOpen(false)} className={styles.auctionLink}>Subastas <ChevronRight size={16} /></Link>}
               </>
             ) : userData?.role === "seller" ? (
@@ -155,11 +159,17 @@ export default function Header({ isSticky = true, isFixed = false }: HeaderProps
                 <Link href="/vendedor" onClick={() => setIsMenuOpen(false)}>Mi Panel <ChevronRight size={16} /></Link>
                 <Link href="/perfil" onClick={() => setIsMenuOpen(false)}>Mi Perfil <ChevronRight size={16} /></Link>
                 <Link href="/explora2" onClick={() => setIsMenuOpen(false)}>Explorar <ChevronRight size={16} /></Link>
+                <Link href="/scan" onClick={() => setIsMenuOpen(false)} style={{ color: '#ffd700', fontWeight: 'bold' }}>
+                  <Camera size={16} style={{ verticalAlign: 'middle', marginRight: '8px' }} /> Escanear Carta <ChevronRight size={16} />
+                </Link>
                 {auctionsEnabled && <Link href="/subastas" onClick={() => setIsMenuOpen(false)} className={styles.auctionLink}>Subastas <ChevronRight size={16} /></Link>}
               </>
             ) : (
               <>
                 <Link href="/explora2" onClick={() => setIsMenuOpen(false)}>Explorar <ChevronRight size={16} /></Link>
+                <Link href="/scan" onClick={() => setIsMenuOpen(false)} style={{ color: '#ffd700', fontWeight: 'bold' }}>
+                  <Camera size={16} style={{ verticalAlign: 'middle', marginRight: '8px' }} /> Escanear Carta <ChevronRight size={16} />
+                </Link>
                 {auctionsEnabled && <Link href="/subastas" onClick={() => setIsMenuOpen(false)} className={styles.auctionLink}>Subastas <ChevronRight size={16} /></Link>}
               </>
             )}

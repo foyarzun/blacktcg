@@ -1,0 +1,282 @@
+.main {
+  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.scannerContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.videoWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 10 / 14; /* Card aspect ratio approx */
+  border-radius: 20px;
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 50px rgba(255, 215, 0, 0.1);
+  overflow: hidden;
+  background: #050505;
+}
+
+.videoFeed {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.statusOnVideo {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  color: #ffd700;
+  text-align: center;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  font-family: monospace;
+  backdrop-filter: blur(5px);
+  z-index: 5;
+}
+
+.capturedOverlay {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+}
+
+.closeBtn {
+  background: rgba(255, 0, 0, 0.2);
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.closeBtn:hover {
+  background: #f00;
+  transform: rotate(90deg);
+}
+
+.hudOverlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+}
+
+.focusFrame {
+  position: absolute;
+  top: 15%; left: 10%; right: 10%; bottom: 15%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.focusFrame::before {
+  content: "";
+  position: absolute;
+  top: -10px; left: -10px; width: 30px; height: 30px;
+  border-top: 3px solid #ffd700;
+  border-left: 3px solid #ffd700;
+}
+
+.focusFrame::after {
+  content: "";
+  position: absolute;
+  bottom: -10px; right: -10px; width: 30px; height: 30px;
+  border-bottom: 3px solid #ffd700;
+  border-right: 3px solid #ffd700;
+}
+
+.scanningLine {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  box-shadow: 0 0 15px #ffd700;
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+  from { top: 0%; }
+  to { top: 100%; }
+}
+
+.controls {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.scanBtn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd700 0%, #b8860b 100%);
+  border: 5px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.scanBtn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+}
+
+.scanBtn:active {
+  transform: scale(0.9);
+}
+
+.scanBtnInner {
+  width: 25px;
+  height: 25px;
+  background: #000;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 0.4; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+.resultsSection {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 2rem;
+  background: #0a0a0a;
+  border-radius: 15px;
+  border: 1px solid #1a1a1a;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.statusText {
+  color: #ffd700;
+  font-family: monospace;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.cardItem {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 10px;
+  padding: 0.5rem;
+  text-align: center;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.cardItem:hover {
+  transform: translateY(-5px);
+  border-color: #ffd700;
+}
+
+.cardItem img {
+  width: 100%;
+  border-radius: 6px;
+  aspect-ratio: 10 / 14;
+  object-fit: contain;
+}
+
+.cardName {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #aaa;
+}
+
+.emptyResults {
+  text-align: center;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.searchAgainBtn {
+  background: #ffd700;
+  color: #000;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.9rem;
+  align-self: center;
+}
+
+.loader {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.instructions {
+  width: 100%;
+  max-width: 500px;
+  margin: 3rem auto 2rem;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  padding: 0 2rem;
+  line-height: 1.6;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #ffd700;
+  border-radius: 50%;
+  animation: bounce 0.5s infinite alternate;
+}
+
+.dot:nth-child(2) { animation-delay: 0.1s; }
+.dot:nth-child(3) { animation-delay: 0.2s; }
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}
+
+@media (max-width: 768px) {
+  .videoWrapper {
+    max-width: 100%;
+    aspect-ratio: auto;
+    height: 60vh;
+  }
+}
