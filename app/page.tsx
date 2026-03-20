@@ -12,7 +12,7 @@ export default function Home() {
   const [auctionsEnabled, setAuctionsEnabled] = useState(false);
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
-  const [latestCards, setLatestCards] = useState<any[]>([]);
+  const [featuredSellersData, setFeaturedSellersData] = useState<any[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -24,14 +24,32 @@ export default function Home() {
       }
     });
 
-    // 2. Fetch latest cards for slider
-    const q = query(collection(db, "inventory"), where("status", "==", "active"), orderBy("createdAt", "desc"), limit(5));
+    // 2. Fetch latest cards and group by seller
+    const q = query(collection(db, "inventory"), where("status", "==", "active"), orderBy("createdAt", "desc"), limit(20));
     const unsubLatest = onSnapshot(q, (snapshot) => {
       const items = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
-      setLatestCards(items);
+      
+      // Group by seller
+      const grouped: { [key: string]: any } = {};
+      items.forEach((item: any) => {
+        if (!grouped[item.sellerId]) {
+          grouped[item.sellerId] = {
+            id: item.sellerId,
+            name: item.sellerName || "Vendedor Destacado",
+            city: item.sellerCity || "Chile",
+            cards: [],
+            img: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(item.sellerName || 'BC')}`
+          };
+        }
+        if (grouped[item.sellerId].cards.length < 4) {
+          grouped[item.sellerId].cards.push(item);
+        }
+      });
+      
+      setFeaturedSellersData(Object.values(grouped).slice(0, 5));
     });
 
     return () => {
@@ -42,12 +60,12 @@ export default function Home() {
 
   // 3. Slider logic
   useEffect(() => {
-    if (latestCards.length === 0) return;
+    if (featuredSellersData.length <= 1) return;
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % latestCards.length);
-    }, 4000);
+      setCurrentSlide((prev) => (prev + 1) % featuredSellersData.length);
+    }, 5000);
     return () => clearInterval(interval);
-  }, [latestCards]);
+  }, [featuredSellersData]);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,32 +99,43 @@ export default function Home() {
             <Link href="/vendedor" className={styles.secondaryBtn}>Vender</Link>
           </div>
 
-          <div className={styles.recentSliderCentered}>
+          <div className={styles.recentSellersSlider}>
             <div className={styles.sliderHeaderSmall}>
-              <h3>Novedades Recientes</h3>
+              <h3>Vendedores con Novedades</h3>
               <div className={styles.slideDots}>
-                {latestCards.map((_, i) => (
+                {featuredSellersData.map((_, i: number) => (
                   <span key={i} className={`${styles.dot} ${currentSlide === i ? styles.activeDot : ''}`} />
                 ))}
               </div>
             </div>
-            <div className={styles.sliderHorizontal}>
-              {latestCards.length > 0 ? (
-                latestCards.map((card, index) => (
-                  <Link
-                    href={`/explora/detalle?id=${card.id}`}
-                    key={card.id}
-                    className={`${styles.miniSlide} ${currentSlide === index ? styles.activeMiniSlide : ''}`}
+            <div className={styles.sliderWrapper}>
+              {featuredSellersData.length > 0 ? (
+                featuredSellersData.map((seller, index) => (
+                  <div
+                    key={seller.id}
+                    className={`${styles.sellerSlide} ${currentSlide === index ? styles.activeSellerSlide : ''}`}
                   >
-                    <img src={card.imageUrl || "https://images.pokemontcg.io/base1/4_hires.png"} alt={card.cardName} className={styles.miniImg} />
-                    <div className={styles.miniInfo}>
-                      <h4>{card.cardName}</h4>
-                      <p>${card.price?.toLocaleString()}</p>
+                    <div className={styles.sellerSlideInfo}>
+                       <img src={seller.img} alt={seller.name} className={styles.sellerSlideImg} />
+                       <div className={styles.sellerSlideText}>
+                          <h4>{seller.name}</h4>
+                          <span>{seller.city}</span>
+                       </div>
                     </div>
-                  </Link>
+                    <div className={styles.sellerSlideCards}>
+                       {seller.cards.map((card: any) => (
+                         <Link href={`/explora/detalle?id=${card.id}`} key={card.id} className={styles.cardPreviewMini}>
+                            <img src={card.imageUrl} alt={card.cardName} />
+                            <div className={styles.cardPreviewInfo}>
+                               <p>${card.price?.toLocaleString()}</p>
+                            </div>
+                         </Link>
+                       ))}
+                    </div>
+                  </div>
                 ))
               ) : (
-                <div className={styles.noSlidesSmall}>Cargando...</div>
+                <div className={styles.noSlidesSmall}>Explorando nuevas colecciones...</div>
               )}
             </div>
           </div>
