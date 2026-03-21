@@ -22,6 +22,45 @@ const MOCK_HISTORICAL_DATA = [
   { date: "Jun", price: 520 },
 ];
 
+const MOCK_GRADED_HISTORY = [
+  { date: "Nov 24", psa10: 2000, cgc: 2200, bgs: 1900 },
+  { date: "Dec 1", psa10: 1900, cgc: 2200, bgs: 1850 },
+  { date: "Dec 8", psa10: 1750, cgc: 1800, bgs: 1700 },
+  { date: "Dec 15", psa10: 1300, cgc: 1200, bgs: 1250 },
+  { date: "Dec 22", psa10: 800, cgc: 750, bgs: 780 },
+  { date: "Dec 29", psa10: 700, cgc: 650, bgs: 680 },
+  { date: "Jan 5", psa10: 680, cgc: 600, bgs: 620 },
+  { date: "Jan 12", psa10: 550, cgc: 500, bgs: 520 },
+  { date: "Jan 19", psa10: 500, cgc: 450, bgs: 470 },
+  { date: "Jan 26", psa10: 450, cgc: 400, bgs: 420 },
+  { date: "Feb 2", psa10: 420, cgc: 380, bgs: 400 },
+  { date: "Feb 9", psa10: 400, cgc: 360, bgs: 380 },
+  { date: "Feb 16", psa10: 380, cgc: 350, bgs: 360 },
+  { date: "Feb 23", psa10: 370, cgc: 340, bgs: 350 },
+  { date: "Mar 2", psa10: 375, cgc: 345, bgs: 355 },
+  { date: "Mar 9", psa10: 385, cgc: 355, bgs: 365 },
+  { date: "Mar 19", psa10: 400, cgc: 370, bgs: 380 },
+];
+
+const MOCK_UNGRADED_HISTORY = [
+  { date: "Nov 17", price: 200 },
+  { date: "Nov 25", price: 120 },
+  { date: "Dec 3", price: 80 },
+  { date: "Dec 11", price: 75 },
+  { date: "Dec 19", price: 70 },
+  { date: "Dec 27", price: 65 },
+  { date: "Jan 4", price: 50 },
+  { date: "Jan 12", price: 48 },
+  { date: "Jan 20", price: 45 },
+  { date: "Jan 28", price: 43 },
+  { date: "Feb 5", price: 42 },
+  { date: "Feb 13", price: 40 },
+  { date: "Feb 21", price: 38 },
+  { date: "Mar 1", price: 37 },
+  { date: "Mar 9", price: 38 },
+  { date: "Mar 20", price: 45 },
+];
+
 function DetailContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -97,7 +136,15 @@ function DetailContent() {
         language: data.language || "Español",
         finish: data.finish || "Normal",
         rarity: data.rarity || data.condition || "Rara",
-        sellerCity: data.sellerCity || "Santiago"
+        sellerCity: data.sellerCity || "Santiago",
+        // Extended Pokémon mechanics (from user reference)
+        type: data.type || "Fire",
+        hp: data.hp || "360",
+        stage: data.stage || "Stage 2",
+        attack1: data.attack1 || "[R][R] Inferno X (90x)",
+        attack1Desc: data.attack1Desc || "Discard any amount of Fire Energy from among your Pokémon, and this attack does 90 damage for each card you discarded in this way.",
+        weakness: data.weakness || "Wx2",
+        retreatCost: data.retreatCost || "2"
       };
     };
 
@@ -292,7 +339,8 @@ function DetailContent() {
 
           {activeTab === "grafico" ? (
             <div className={styles.chartContainer}>
-              <ResponsiveContainer width="100%" height={400}>
+              <h3>Historial de Precios Locales (Blackcards)</h3>
+              <ResponsiveContainer width="100%" height={300}>
                 <AreaChart data={history}>
                   <defs>
                     <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
@@ -320,12 +368,6 @@ function DetailContent() {
                     contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
                     itemStyle={{ color: 'var(--accent-color)' }}
                     formatter={(value: any) => [`$${value.toLocaleString()}`, 'Precio']}
-                    labelFormatter={(label, payload) => {
-                      if (payload && payload[0]) {
-                        return `Fecha: ${payload[0].payload.date} ${payload[0].payload.time || ''}`;
-                      }
-                      return `Fecha: ${label}`;
-                    }}
                   />
                   <Area 
                     type="monotone" 
@@ -334,7 +376,6 @@ function DetailContent() {
                     strokeWidth={3}
                     fillOpacity={1} 
                     fill="url(#colorPrice)" 
-                    animationDuration={1500}
                   />
                 </AreaChart>
               </ResponsiveContainer>
@@ -344,21 +385,118 @@ function DetailContent() {
               <div className={styles.sellerCard}>
                 <h3>Venta Directa</h3>
                 <p>Estado: <strong>{card.condition}</strong></p>
-                <button className={styles.mainBuyBtn} onClick={handleBuy}>Añadir al Carrito</button>
+                <div className={styles.sellerMainAction}>
+                   <div className={styles.priceTag}>
+                      <span>Precio Unitario</span>
+                      <strong>${card.price.toLocaleString()}</strong>
+                   </div>
+                   <button className={styles.mainBuyBtn} onClick={handleBuy}>Añadir al Carrito</button>
+                </div>
+              </div>
+
+              {/* Technical Details Section (Mockup 1) */}
+              <div className={styles.techDetailsBox}>
+                 <div className={styles.techHeader}>
+                    <Info size={18} />
+                    <h3>Details</h3>
+                    <span className={styles.reportBtn}>Report a problem</span>
+                 </div>
+                 <div className={styles.techGrid}>
+                    <div className={styles.techItem}><span>Card Type:</span><strong>{card.type}</strong></div>
+                    <div className={styles.techItem}><span>HP:</span><strong>{card.hp}</strong></div>
+                    <div className={styles.techItem}><span>Stage:</span><strong>{card.stage}</strong></div>
+                    <div className={styles.techItem} style={{ gridColumn: 'span 2' }}>
+                       <span>Attack 1:</span>
+                       <strong className={styles.attackName}>{card.attack1}</strong>
+                       <p className={styles.attackDesc}>{card.attack1Desc}</p>
+                    </div>
+                    <div className={styles.techItem}><span>Weakness:</span><strong>{card.weakness}</strong></div>
+                    <div className={styles.techItem}><span>Retreat Cost:</span><strong>{card.retreatCost}</strong></div>
+                    <div className={styles.techItem}><span>Rarity:</span><strong>{card.rarity}</strong></div>
+                    <div className={styles.techItem}><span>Card Number:</span><strong>{card.cardNumber}</strong></div>
+                 </div>
               </div>
             </div>
           )}
+          
+          {/* Global Market Analytics */}
+          <div className={styles.analyticsSection}>
+             <h2 className={styles.analyticsTitle}>Analítica de Mercado Global</h2>
+             
+             <div className={styles.analyticsGrid}>
+                {/* Graded History (Mockup 2) */}
+                <div className={styles.analyticsCard}>
+                   <div className={styles.analyticsHeader}>
+                      <div className={styles.iconHistory} />
+                      <h3>Graded Price History</h3>
+                   </div>
+                   <div className={styles.chartWrapper}>
+                      <ResponsiveContainer width="100%" height={300}>
+                         <AreaChart data={MOCK_GRADED_HISTORY}>
+                            <CartesianGrid strokeDasharray="1 1" stroke="rgba(255,255,255,0.05)" />
+                            <XAxis dataKey="date" fontSize={10} stroke="#666" />
+                            <YAxis fontSize={10} stroke="#666" />
+                            <Tooltip 
+                               contentStyle={{ backgroundColor: '#000', border: '1px solid #333' }}
+                               labelStyle={{ color: '#fff' }}
+                            />
+                            <Area type="monotone" dataKey="psa10" stroke="#00aaff" fill="#00aaff" fillOpacity={0.1} strokeWidth={2} name="PSA 10" />
+                            <Area type="monotone" dataKey="cgc" stroke="#ffd700" fill="#ffd700" fillOpacity={0.1} strokeWidth={2} name="CGC Pristine" />
+                         </AreaChart>
+                      </ResponsiveContainer>
+                   </div>
+                   <div className={styles.analyticsLegend}>
+                      <span style={{ color: '#00aaff' }}>● PSA 10</span>
+                      <span style={{ color: '#ffd700' }}>● CGC Pristine</span>
+                   </div>
+                </div>
+
+                {/* Ungraded History (Mockup 3) */}
+                <div className={styles.analyticsCard}>
+                   <div className={styles.analyticsHeader}>
+                      <div className={styles.iconHistory} />
+                      <h3>Ungraded Price History</h3>
+                   </div>
+                   <div className={styles.chartWrapper}>
+                      <ResponsiveContainer width="100%" height={300}>
+                         <AreaChart data={MOCK_UNGRADED_HISTORY}>
+                            <CartesianGrid strokeDasharray="1 1" stroke="rgba(255,255,255,0.05)" />
+                            <XAxis dataKey="date" fontSize={10} stroke="#666" />
+                            <YAxis fontSize={10} stroke="#666" />
+                            <Tooltip 
+                               contentStyle={{ backgroundColor: '#000', border: '1px solid #333' }}
+                               labelStyle={{ color: '#fff' }}
+                            />
+                            <Area type="monotone" dataKey="price" stroke="#00f2ea" fill="#00f2ea" fillOpacity={0.2} strokeWidth={3} name="Market" />
+                         </AreaChart>
+                      </ResponsiveContainer>
+                   </div>
+                </div>
+             </div>
+          </div>
         </div>
 
         <div className={styles.sidebar}>
           <div className={styles.detailsCard}>
-            <h3>Detalles Técnicos</h3>
+            <h3>Información Adicional</h3>
             <div className={styles.attribute}><span>Juego</span><strong>{card.game.toUpperCase()}</strong></div>
             <div className={styles.attribute}><span>Condición</span><strong>{card.condition}</strong></div>
             <div className={styles.attribute}><span>Rareza</span><strong>{card.rarity}</strong></div>
             <div className={styles.attribute}><span>Expansión</span><strong>{card.expansion}</strong></div>
             <div className={styles.attribute}><span>Idioma</span><strong>{card.language}</strong></div>
             <div className={styles.attribute}><span>Acabado</span><strong>{card.finish}</strong></div>
+          </div>
+
+          <div className={styles.shippingCard}>
+             <h3>Envío y Seguridad</h3>
+             <div className={styles.shippingFeature}>
+                <strong>🛡️ Black Protection</strong>
+                <p>Tu dinero está seguro hasta que recibas la carta.</p>
+             </div>
+             <div className={styles.shippingFeature}>
+                <strong>📦 Envío Certificado</strong>
+                <p>Opciones de Starken o Chilexpress disponibles.</p>
+             </div>
           </div>
         </div>
       </div>
