@@ -137,15 +137,48 @@ function DetailContent() {
         finish: data.finish || "Normal",
         rarity: data.rarity || data.condition || "Rara",
         sellerCity: data.sellerCity || "Santiago",
-        // Extended Pokémon mechanics (from user reference)
-        type: data.type || "Fire",
-        hp: data.hp || "360",
-        stage: data.stage || "Stage 2",
-        attack1: data.attack1 || "[R][R] Inferno X (90x)",
-        attack1Desc: data.attack1Desc || "Discard any amount of Fire Energy from among your Pokémon, and this attack does 90 damage for each card you discarded in this way.",
-        weakness: data.weakness || "Wx2",
-        retreatCost: data.retreatCost || "2"
+        // Technical mechanics (initially from listing data)
+        type: data.type || "N/A",
+        hp: data.hp || "N/A",
+        stage: data.stage || "N/A",
+        attack1: data.attack1 || "N/A",
+        attack1Desc: data.attack1Desc || "",
+        weakness: data.weakness || "N/A",
+        retreatCost: data.retreatCost || "N/A"
       };
+    };
+
+    const fetchCardDetailsFromAPI = async (name: string, number: string) => {
+      try {
+        let query = `name:"${name}"`;
+        if (number && number !== "S/N") {
+           query += ` (number:"${number}" OR localId:"${number}")`;
+        }
+        
+        const response = await fetch(`https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(query)}&pageSize=1`);
+        if (!response.ok) return null;
+        const result = await response.json();
+        const apiCard = result.data?.[0];
+        if (apiCard) {
+           const firstAttack = apiCard.attacks?.[0];
+           const energyCost = firstAttack?.cost?.map((c: string) => `[${c[0]}]`).join('') || "";
+           
+           return {
+             hp: apiCard.hp || "N/A",
+             stage: apiCard.supertype === "Pokemon" ? (apiCard.subtypes?.[0] || "Basic") : apiCard.supertype,
+             type: apiCard.types?.[0] || "N/A",
+             attack1: firstAttack ? `${energyCost} ${firstAttack.name} ${firstAttack.damage ? `(${firstAttack.damage})` : ""}` : "N/A",
+             attack1Desc: firstAttack?.text || "",
+             weakness: apiCard.weaknesses?.[0] ? `${apiCard.weaknesses[0].type} ${apiCard.weaknesses[0].value}` : "N/A",
+             retreatCost: apiCard.retreatCost?.length?.toString() || "0",
+             expansion: apiCard.set?.name || "",
+             rarity: apiCard.rarity || ""
+           };
+        }
+      } catch (e) {
+        console.error("Error fetching card details from API:", e);
+      }
+      return null;
     };
 
     const init = async () => {
@@ -205,16 +238,34 @@ function DetailContent() {
         const docSnap = await getDoc(docRef);
         
         if (docSnap.exists()) {
-          const initialCard = normalizeCard(docSnap.data(), docSnap.id);
-          setCard(initialCard);
+          const baseData = normalizeCard(docSnap.data(), docSnap.id);
+          
+          // Enhance with API if needed
+          if (baseData.game.toLowerCase() === "pokemon") {
+             const apiDetails = await fetchCardDetailsFromAPI(baseData.cardName, baseData.cardNumber);
+             if (apiDetails) {
+                const enhanced = {
+                  ...baseData,
+                  ...apiDetails,
+                  expansion: baseData.expansion === "Colección Base" ? apiDetails.expansion : baseData.expansion,
+                };
+                setCard(enhanced);
+             } else {
+                setCard(baseData);
+             }
+          } else {
+             setCard(baseData);
+          }
 
           unsubscribeCard = onSnapshot(docRef, (snap) => {
             if (snap.exists()) {
-              setCard(normalizeCard(snap.data(), snap.id));
+              const snapData = normalizeCard(snap.data(), snap.id);
+              // Reuse existing API details if already fetched
+              setCard((prev: any) => prev ? { ...snapData, ...prev, price: snapData.price } : snapData);
             }
           });
 
-          unsubscribeHistory = setupHistoryListener(colName, targetId, initialCard.price);
+          unsubscribeHistory = setupHistoryListener(colName, targetId, baseData.price);
           setLoading(false);
           return;
         }
