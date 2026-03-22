@@ -279,226 +279,184 @@ function DetailContent() {
   if (!card) return <div style={{ color: 'white', padding: '2rem' }}>Carta no encontrada.</div>;
 
   return (
-    <div className={styles.container}>
-      <div className={styles.topSection}>
-        <div className={styles.cardInfo}>
-          <span className={styles.badge}>{card.game.toUpperCase()} • {card.condition}</span>
-          <h1>{card.cardName}</h1>
-          <p className={styles.meta}>
-            Vendido por <strong>{card.sellerName}</strong>
-            {distanceInfo && (
-              <span className={styles.distanceBadge}>
-                <MapPin size={12} /> {distanceInfo}
-              </span>
-            )}
-          </p>
-        </div>
-        <div className={styles.priceOverview}>
-          <span>Precio del Vendedor</span>
-          <strong className={styles.marketPrice}>${card.price.toLocaleString()}</strong>
-          <span className={styles.trend}>Stock disponible: {card.stock}</span>
-          {marketRef && (
-            <div className={styles.referencePrice}>
-              <Info size={12} />
-              <span>Ref. Mercado: <strong>${marketRef.price.toLocaleString()}</strong> ({marketRef.source})</span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className={styles.mainGrid}>
-        <div className={styles.chartSection}>
+    <div className={styles.containerV2}>
+      {/* 1. Cinematic Hero Section */}
+      <section className={styles.heroSection}>
+        <div className={styles.heroContent}>
           <div 
-            className={styles.imageGallery}
+            className={styles.imageGalleryV2}
             onMouseMove={handleMouseMove}
             onMouseLeave={() => { setRotate({x:0, y:0}); setGlare({...glare, opacity:0}); }}
-            style={{ perspective: '1000px' }}
           >
              <div 
-               className={styles.glareWrapper}
+               className={styles.glareWrapperV2}
                style={{
                  transform: `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
-                 transition: 'transform 0.1s ease'
                }}
              >
-               <img src={card.imageUrl} alt={card.cardName} className={styles.detailImage} />
-               <div 
-                 className={styles.detailShine}
-                 style={{
-                   background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.4) 0%, transparent 60%)`,
-                   opacity: glare.opacity
-                 }}
-               />
+               <img src={card.imageUrl} alt={card.cardName} className={styles.heroImage} />
              </div>
           </div>
 
-          <div className={styles.tabs} style={{ marginTop: '2rem' }}>
-            <button className={activeTab === "vendedores" ? styles.activeTab : ""} onClick={() => setActiveTab("vendedores")}>Información de Venta</button>
-            <button className={activeTab === "grafico" ? styles.activeTab : ""} onClick={() => setActiveTab("grafico")}>Historial de Precios</button>
-          </div>
-
-          {activeTab === "grafico" ? (
-            <div className={styles.chartContainer}>
-              <h3>Historial de Precios Locales (Blackcards)</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <AreaChart data={history}>
-                  <defs>
-                    <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--accent-color)" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="var(--accent-color)" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
-                  <XAxis 
-                    dataKey="date" 
-                    stroke="rgba(255,255,255,0.5)" 
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                  />
-                  <YAxis 
-                    stroke="rgba(255,255,255,0.5)" 
-                    fontSize={12}
-                    tickFormatter={(value) => `$${value.toLocaleString()}`}
-                    tickLine={false}
-                    axisLine={false}
-                    domain={['auto', 'auto']}
-                  />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
-                    itemStyle={{ color: 'var(--accent-color)' }}
-                    formatter={(value: any) => [`$${value.toLocaleString()}`, 'Precio']}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="price" 
-                    stroke="var(--accent-color)" 
-                    strokeWidth={3}
-                    fillOpacity={1} 
-                    fill="url(#colorPrice)" 
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          ) : (
-            <div className={styles.sellerDetails}>
-              <div className={styles.sellerCard}>
-                <h3>Venta Directa</h3>
-                <p>Estado: <strong>{card.condition}</strong></p>
-                <div className={styles.sellerMainAction}>
-                   <div className={styles.priceTag}>
-                      <span>Precio Unitario</span>
-                      <strong>${card.price.toLocaleString()}</strong>
-                   </div>
-                   <button className={styles.mainBuyBtn} onClick={handleBuy}>Añadir al Carrito</button>
-                </div>
+          <div className={styles.heroInfo}>
+            <div className={styles.heroHeader}>
+              <span className={styles.heroBadge}>{card.game.toUpperCase()}</span>
+              <h1 className={styles.heroTitle}>{card.cardName}</h1>
+              <div className={styles.heroMeta}>
+                <span>{card.expansion}</span>
+                <span className={styles.dotSeparator}>•</span>
+                <span>#{card.cardNumber}</span>
+                <span className={styles.dotSeparator}>•</span>
+                <span className={styles.conditionBtn}>{card.condition}</span>
               </div>
+            </div>
 
-              {/* Technical Details Section (Mockup 1) */}
-              <div className={styles.techDetailsBox}>
-                 <div className={styles.techHeader}>
-                    <Info size={18} />
-                    <h3>Details</h3>
-                    <span className={styles.reportBtn}>Report a problem</span>
+            <div className={styles.heroActionArea}>
+              <div className={styles.heroPriceBlock}>
+                 <span className={styles.priceLabel}>Precio de Venta</span>
+                 <h2 className={styles.heroPrice}>${card.price.toLocaleString()}</h2>
+                 {marketRef && (
+                   <span className={styles.heroRefPrice}>Ref. Mercado: ${marketRef.price.toLocaleString()} ({marketRef.source})</span>
+                 )}
+              </div>
+              <div className={styles.heroButtons}>
+                 <button className={styles.buyBtnV2} onClick={handleBuy}>Comprar Ahora</button>
+                 <button className={styles.cartBtnV2} onClick={handleBuy}>Añadir al Carrito</button>
+              </div>
+              <div className={styles.sellerMiniInfo}>
+                 <img src={`https://api.dicebear.com/7.x/initials/svg?seed=${card.sellerName}`} alt={card.sellerName} />
+                 <div>
+                    <p>Vendido por <strong>{card.sellerName}</strong></p>
+                    <span>Ubicación: {card.sellerCity} {distanceInfo ? `(${distanceInfo})` : ""}</span>
                  </div>
-                 <div className={styles.techGrid}>
-                    <div className={styles.techItem}><span>Card Type:</span><strong>{card.type}</strong></div>
-                    <div className={styles.techItem}><span>HP:</span><strong>{card.hp}</strong></div>
-                    <div className={styles.techItem}><span>Stage:</span><strong>{card.stage}</strong></div>
-                    <div className={styles.techItem} style={{ gridColumn: 'span 2' }}>
-                       <span>Attack 1:</span>
-                       <strong className={styles.attackName}>{card.attack1}</strong>
-                       <p className={styles.attackDesc}>{card.attack1Desc}</p>
+              </div>
+            </div>
+
+            {/* Integrated Technical Attributes */}
+            <div className={styles.miniTechGrid}>
+               <div className={styles.miniTechItem}><span>HP</span><strong>{card.hp}</strong></div>
+               <div className={styles.miniTechItem}><span>Stage</span><strong>{card.stage}</strong></div>
+               <div className={styles.miniTechItem}><span>Tipo</span><strong>{card.type}</strong></div>
+               <div className={styles.miniTechItem}><span>Retiro</span><strong>{card.retreatCost}</strong></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. Full Width Content Areas */}
+      <div className={styles.contentSectionsV2}>
+        
+        {/* Market Analysis Full Width */}
+        <section className={styles.fullWidthSection}>
+           <div className={styles.sectionHeaderV2}>
+              <h2>Analítica del Mercado Global</h2>
+              <p>Seguimiento de precios real-time en las principales plataformas mundiales.</p>
+           </div>
+           
+           <div className={styles.chartsGridV2}>
+              <div className={styles.chartBoxV2}>
+                 <div className={styles.chartHeaderV2}>
+                    <h3>Tendencia Graduadas (PSA/CGC)</h3>
+                    <div className={styles.chartLegendV2}>
+                       <span style={{ color: '#00aaff' }}>● PSA 10</span>
+                       <span style={{ color: '#ffd700' }}>● CGC Pristine</span>
                     </div>
-                    <div className={styles.techItem}><span>Weakness:</span><strong>{card.weakness}</strong></div>
-                    <div className={styles.techItem}><span>Retreat Cost:</span><strong>{card.retreatCost}</strong></div>
-                    <div className={styles.techItem}><span>Rarity:</span><strong>{card.rarity}</strong></div>
-                    <div className={styles.techItem}><span>Card Number:</span><strong>{card.cardNumber}</strong></div>
+                 </div>
+                 <div className={styles.chartAreaV2}>
+                    <ResponsiveContainer width="100%" height={250}>
+                       <AreaChart data={MOCK_GRADED_HISTORY}>
+                          <defs>
+                             <linearGradient id="psaGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#00aaff" stopOpacity={0.2}/>
+                                <stop offset="95%" stopColor="#00aaff" stopOpacity={0}/>
+                             </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="1 1" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                          <XAxis dataKey="date" fontSize={10} stroke="#444" axisLine={false} tickLine={false} />
+                          <YAxis fontSize={10} stroke="#444" axisLine={false} tickLine={false} tickFormatter={v => `$${v}`} />
+                          <Tooltip contentStyle={{ backgroundColor: '#000', border: '1px solid #222' }} />
+                          <Area type="monotone" dataKey="psa10" stroke="#00aaff" fill="url(#psaGrad)" strokeWidth={2} dot={false} />
+                          <Area type="monotone" dataKey="cgc" stroke="#ffd700" fill="transparent" strokeWidth={2} strokeDasharray="5 5" />
+                       </AreaChart>
+                    </ResponsiveContainer>
                  </div>
               </div>
-            </div>
-          )}
-          
-          {/* Global Market Analytics */}
-          <div className={styles.analyticsSection}>
-             <h2 className={styles.analyticsTitle}>Analítica de Mercado Global</h2>
-             
-             <div className={styles.analyticsGrid}>
-                {/* Graded History (Mockup 2) */}
-                <div className={styles.analyticsCard}>
-                   <div className={styles.analyticsHeader}>
-                      <div className={styles.iconHistory} />
-                      <h3>Graded Price History</h3>
-                   </div>
-                   <div className={styles.chartWrapper}>
-                      <ResponsiveContainer width="100%" height={300}>
-                         <AreaChart data={MOCK_GRADED_HISTORY}>
-                            <CartesianGrid strokeDasharray="1 1" stroke="rgba(255,255,255,0.05)" />
-                            <XAxis dataKey="date" fontSize={10} stroke="#666" />
-                            <YAxis fontSize={10} stroke="#666" />
-                            <Tooltip 
-                               contentStyle={{ backgroundColor: '#000', border: '1px solid #333' }}
-                               labelStyle={{ color: '#fff' }}
-                            />
-                            <Area type="monotone" dataKey="psa10" stroke="#00aaff" fill="#00aaff" fillOpacity={0.1} strokeWidth={2} name="PSA 10" />
-                            <Area type="monotone" dataKey="cgc" stroke="#ffd700" fill="#ffd700" fillOpacity={0.1} strokeWidth={2} name="CGC Pristine" />
-                         </AreaChart>
-                      </ResponsiveContainer>
-                   </div>
-                   <div className={styles.analyticsLegend}>
-                      <span style={{ color: '#00aaff' }}>● PSA 10</span>
-                      <span style={{ color: '#ffd700' }}>● CGC Pristine</span>
-                   </div>
-                </div>
 
-                {/* Ungraded History (Mockup 3) */}
-                <div className={styles.analyticsCard}>
-                   <div className={styles.analyticsHeader}>
-                      <div className={styles.iconHistory} />
-                      <h3>Ungraded Price History</h3>
-                   </div>
-                   <div className={styles.chartWrapper}>
-                      <ResponsiveContainer width="100%" height={300}>
-                         <AreaChart data={MOCK_UNGRADED_HISTORY}>
-                            <CartesianGrid strokeDasharray="1 1" stroke="rgba(255,255,255,0.05)" />
-                            <XAxis dataKey="date" fontSize={10} stroke="#666" />
-                            <YAxis fontSize={10} stroke="#666" />
-                            <Tooltip 
-                               contentStyle={{ backgroundColor: '#000', border: '1px solid #333' }}
-                               labelStyle={{ color: '#fff' }}
-                            />
-                            <Area type="monotone" dataKey="price" stroke="#00f2ea" fill="#00f2ea" fillOpacity={0.2} strokeWidth={3} name="Market" />
-                         </AreaChart>
-                      </ResponsiveContainer>
-                   </div>
-                </div>
-             </div>
-          </div>
-        </div>
+              <div className={styles.chartBoxV2}>
+                 <div className={styles.chartHeaderV2}>
+                    <h3>Historial Carta Base (Market)</h3>
+                 </div>
+                 <div className={styles.chartAreaV2}>
+                    <ResponsiveContainer width="100%" height={250}>
+                       <AreaChart data={MOCK_UNGRADED_HISTORY}>
+                          <defs>
+                             <linearGradient id="marketGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#00f2ea" stopOpacity={0.2}/>
+                                <stop offset="95%" stopColor="#00f2ea" stopOpacity={0}/>
+                             </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="1 1" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                          <XAxis dataKey="date" fontSize={10} stroke="#444" axisLine={false} tickLine={false} />
+                          <YAxis fontSize={10} stroke="#444" axisLine={false} tickLine={false} tickFormatter={v => `$${v}`} />
+                          <Tooltip contentStyle={{ backgroundColor: '#000', border: '1px solid #222' }} />
+                          <Area type="monotone" dataKey="price" stroke="#00f2ea" fill="url(#marketGrad)" strokeWidth={3} dot={false} />
+                       </AreaChart>
+                    </ResponsiveContainer>
+                 </div>
+              </div>
+           </div>
+        </section>
 
-        <div className={styles.sidebar}>
-          <div className={styles.detailsCard}>
-            <h3>Información Adicional</h3>
-            <div className={styles.attribute}><span>Juego</span><strong>{card.game.toUpperCase()}</strong></div>
-            <div className={styles.attribute}><span>Condición</span><strong>{card.condition}</strong></div>
-            <div className={styles.attribute}><span>Rareza</span><strong>{card.rarity}</strong></div>
-            <div className={styles.attribute}><span>Expansión</span><strong>{card.expansion}</strong></div>
-            <div className={styles.attribute}><span>Idioma</span><strong>{card.language}</strong></div>
-            <div className={styles.attribute}><span>Acabado</span><strong>{card.finish}</strong></div>
-          </div>
+        {/* Technical Specification & Attack Section Full Width */}
+        <section className={styles.fullWidthSection}>
+           <div className={styles.sectionHeaderV2}>
+              <h2>Especificaciones Técnicas</h2>
+           </div>
+           <div className={styles.specGridV2}>
+              <div className={styles.specBoxV2}>
+                 <h3>Mecánicas de Ataque</h3>
+                 <div className={styles.attackDetailV2}>
+                    <div className={styles.attackMetaV2}>
+                       <span className={styles.attackCostV2}>{card.attack1.split(' ')[0]}</span>
+                       <strong>{card.attack1.split(' ').slice(1).join(' ')}</strong>
+                    </div>
+                    <p>{card.attack1Desc}</p>
+                 </div>
+                 <div className={styles.weaknessRetreatV2}>
+                    <div><span>Debilidad</span><strong>{card.weakness}</strong></div>
+                    <div><span>Resistencia</span><strong>N/A</strong></div>
+                    <div><span>Coste Retiro</span><strong>{card.retreatCost}</strong></div>
+                 </div>
+              </div>
+              
+              <div className={styles.specBoxV2}>
+                 <h3>Detalles de Colección</h3>
+                 <div className={styles.attrListV2}>
+                    <div className={styles.attrItemV2}><span>Rareza</span><strong>{card.rarity}</strong></div>
+                    <div className={styles.attrItemV2}><span>Idioma</span><strong>{card.language}</strong></div>
+                    <div className={styles.attrItemV2}><span>Acabado</span><strong>{card.finish}</strong></div>
+                    <div className={styles.attrItemV2}><span>Número</span><strong>{card.cardNumber}</strong></div>
+                    <div className={styles.attrItemV2}><span>Expansión</span><strong>{card.expansion}</strong></div>
+                 </div>
+              </div>
+           </div>
+        </section>
 
-          <div className={styles.shippingCard}>
-             <h3>Envío y Seguridad</h3>
-             <div className={styles.shippingFeature}>
-                <strong>🛡️ Black Protection</strong>
-                <p>Tu dinero está seguro hasta que recibas la carta.</p>
-             </div>
-             <div className={styles.shippingFeature}>
-                <strong>📦 Envío Certificado</strong>
-                <p>Opciones de Starken o Chilexpress disponibles.</p>
-             </div>
-          </div>
-        </div>
+        {/* Protection & Shipping Section Footer-style */}
+        <section className={styles.protectionGridV2}>
+           <div className={styles.protectItemV2}>
+              <strong>🛡️ Black Protection</strong>
+              <p>Protegemos tu dinero hasta que la carta esté en tus manos.</p>
+           </div>
+           <div className={styles.protectItemV2}>
+              <strong>📦 Logística Premium</strong>
+              <p>Envíos asegurados a todo Chile con seguimiento en tiempo real.</p>
+           </div>
+           <div className={styles.protectItemV2}>
+              <strong>✨ Estado Garantizado</strong>
+              <p>Nuestras guías de condición aseguran que recibes lo que esperas.</p>
+           </div>
+        </section>
       </div>
     </div>
   );

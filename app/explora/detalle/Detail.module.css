@@ -5,434 +5,425 @@
   padding-bottom: 5rem;
 }
 
-.container {
-  max-width: 1200px;
+/* V2 Minimalist Full-Width Layout */
+.containerV2 {
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 2rem;
 }
 
-.topSection {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+.heroSection {
+  background: radial-gradient(circle at top right, rgba(20, 20, 20, 0.4) 0%, transparent 70%);
+  border-radius: 32px;
+  padding: 4rem;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  margin-bottom: 4rem;
+  background-color: #0a0a0a;
+}
+
+.heroContent {
+  display: grid;
+  grid-template-columns: 450px 1fr;
+  gap: 5rem;
+  align-items: flex-start;
+}
+
+.imageGalleryV2 {
+  width: 100%;
+  perspective: 2000px;
+}
+
+.glareWrapperV2 {
+  transition: transform 0.1s ease;
+  transform-style: preserve-3d;
+}
+
+.heroImage {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+}
+
+.heroHeader {
   margin-bottom: 3rem;
-  border-bottom: 1px solid #222;
-  padding-bottom: 2rem;
 }
 
-.badge {
-  background: rgba(255, 215, 0, 0.1);
-  color: #ffd700;
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  font-size: 0.8rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  display: inline-block;
-}
-
-.cardInfo h1 {
-  font-size: 3.5rem;
-  font-weight: 900;
-  margin: 0.5rem 0;
-  letter-spacing: -1px;
-}
-
-.meta {
-  color: #888;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-top: 0.5rem;
-}
-
-.distanceBadge {
+.heroBadge {
   background: rgba(0, 255, 255, 0.1);
   color: #00ffff;
-  padding: 0.2rem 0.6rem;
+  padding: 0.4rem 1rem;
   border-radius: 4px;
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  border: 1px solid rgba(0, 255, 255, 0.2);
-}
-
-.priceOverview {
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-}
-
-.marketPrice {
-  font-size: 3rem;
-  color: #fff;
+  font-size: 0.75rem;
   font-weight: 800;
-}
-
-.trend {
-  color: #00ff00;
-  font-size: 0.9rem;
-}
-
-.mainGrid {
-  display: grid;
-  grid-template-columns: 1fr 350px;
-  gap: 4rem;
-}
-
-.imageGallery {
-  background: #111;
-  border-radius: 24px;
-  padding: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid #222;
-}
-
-.glareWrapper {
-  position: relative;
-  width: 100%;
-  max-width: 400px;
-  z-index: 2;
-}
-
-.detailImage {
-  width: 100%;
-  border-radius: 12px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-}
-
-.detailShine {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.tabs {
-  display: flex;
-  gap: 2rem;
-  border-bottom: 1px solid #222;
-  margin-bottom: 2rem;
-}
-
-.activeTab {
-  color: #ffd700;
-  border-bottom: 2px solid #ffd700;
-  padding-bottom: 1rem;
-  font-weight: 700;
-}
-
-.tabs button {
-  background: none;
-  border: none;
-  color: #666;
-  padding: 1rem 0;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s;
-}
-
-.sellerCard {
-  background: #111;
-  padding: 2rem;
-  border-radius: 20px;
-  border: 1px solid #222;
-}
-
-.mainBuyBtn {
-  width: 100%;
-  background: #fff;
-  color: #000;
-  padding: 1.2rem;
-  border-radius: 12px;
-  font-weight: 900;
-  border: none;
-  margin-top: 2rem;
-  cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
-}
-
-.mainBuyBtn:hover {
-  background: #ffd700;
-  transform: translateY(-2px);
-}
-
-.sellerMainAction {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  margin-top: 1.5rem;
-}
-
-.priceTag {
-  display: flex;
-  flex-direction: column;
-}
-
-.priceTag span {
-  font-size: 0.8rem;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.priceTag strong {
-  font-size: 2.2rem;
-  color: #fff;
-  font-weight: 800;
-}
-
-/* Tech Details Box (Mockup 1 style) */
-.techDetailsBox {
-  background: #fff; /* White background slightly to contrast or very dark? The image shows white */
-  background: #111; /* Stick to dark theme for consistency but similar layout */
-  border-radius: 12px;
-  padding: 1.5rem;
-  border: 1px solid #222;
-  margin-top: 2rem;
-}
-
-.techHeader {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  letter-spacing: 2px;
+  display: inline-block;
   margin-bottom: 1.5rem;
-  color: #008080; /* Teal like the image */
 }
 
-.techHeader h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #fff;
-  flex: 1;
-}
-
-.reportBtn {
-  font-size: 0.8rem;
-  color: #666;
-  cursor: pointer;
-}
-
-.techGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-}
-
-.techItem {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.techItem span {
-  font-size: 0.85rem;
-  color: #666;
-  font-weight: 600;
-}
-
-.techItem strong {
-  font-size: 1rem;
-  color: #aaa;
-  font-weight: 500;
-}
-
-.techItem .attackName {
-  color: #ccc;
-  font-weight: 600;
-}
-
-.techItem .attackDesc {
-  font-size: 0.8rem;
-  color: #666;
-  line-height: 1.4;
-  margin-top: 0.25rem;
-}
-
-/* Analytics Section (Mockup 2 & 3) */
-.analyticsSection {
-  margin-top: 4rem;
-  padding-top: 3rem;
-  border-top: 1px solid #222;
-}
-
-.analyticsTitle {
-  font-size: 1.75rem;
-  font-weight: 800;
-  margin-bottom: 2rem;
-  background: linear-gradient(to right, #fff, #666);
+.heroTitle {
+  font-size: 4.5rem;
+  font-weight: 950;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(to bottom, #fff 40%, #555 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.analyticsGrid {
+.heroMeta {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.dotSeparator {
+  opacity: 0.3;
+}
+
+.conditionBtn {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border: 1px solid #333;
+}
+
+.heroActionArea {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 500px;
+}
+
+.heroPriceBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.priceLabel {
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.heroPrice {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+.heroRefPrice {
+  font-size: 0.9rem;
+  color: #4da6ff;
+  margin-top: 0.5rem;
+}
+
+.heroButtons {
+  display: flex;
+  gap: 1rem;
+}
+
+.buyBtnV2 {
+  flex: 1;
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 1.2rem;
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.buyBtnV2:hover {
+  background: #ffd700;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.cartBtnV2 {
+  flex: 1;
+  background: transparent;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 1.2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cartBtnV2:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #fff;
+}
+
+.sellerMiniInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 1.2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sellerMiniInfo img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid #444;
+}
+
+.sellerMiniInfo p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.sellerMiniInfo span {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.miniTechGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.miniTechItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.miniTechItem span {
+  font-size: 0.75rem;
+  color: #555;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.miniTechItem strong {
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+/* Sections V2 */
+.contentSectionsV2 {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.fullWidthSection {
+  width: 100%;
+}
+
+.sectionHeaderV2 {
+  margin-bottom: 3rem;
+}
+
+.sectionHeaderV2 h2 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+
+.sectionHeaderV2 p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.chartsGridV2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
 }
 
-.analyticsCard {
+.chartBoxV2 {
   background: #0d0d0d;
-  border-radius: 12px;
-  padding: 1.5rem;
-  border: 1px solid #222;
+  padding: 2.5rem;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-.analyticsHeader {
+.chartHeaderV2 {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.8rem;
   margin-bottom: 2rem;
 }
 
-.analyticsHeader h3 {
-  font-size: 1.1rem;
+.chartHeaderV2 h3 {
+  font-size: 1.25rem;
   font-weight: 700;
 }
 
-.iconHistory {
-  width: 18px;
-  height: 18px;
-  border: 1.5px solid #00f2ea;
-  border-radius: 50%;
-  position: relative;
+.chartLegendV2 {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 800;
 }
 
-.iconHistory::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 6px;
-  height: 6px;
-  border-left: 1.5px solid #00f2ea;
-  border-bottom: 1.5px solid #00f2ea;
-  transform: translate(-30%, -70%);
-}
-
-.chartWrapper {
+.chartAreaV2 {
   width: 100%;
 }
 
-.analyticsLegend {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  margin-top: 1rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-/* Shipping Card */
-.shippingCard {
-  background: #111;
-  padding: 2rem;
-  border-radius: 20px;
-  border: 1px solid #222;
-}
-
-.shippingFeature {
-  margin-bottom: 1.5rem;
-}
-
-.shippingFeature:last-child {
-  margin-bottom: 0;
-}
-
-.shippingFeature strong {
-  display: block;
-  font-size: 0.9rem;
-  color: #fff;
-  margin-bottom: 0.25rem;
-}
-
-.shippingFeature p {
-  font-size: 0.85rem;
-  color: #666;
-  line-height: 1.4;
-}
-
-@media (max-width: 1000px) {
-  .analyticsGrid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.sidebar {
-  display: flex;
-  flex-direction: column;
+.specGridV2 {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
   gap: 2rem;
 }
 
-.detailsCard {
-  background: #111;
-  padding: 2rem;
-  border-radius: 20px;
-  border: 1px solid #222;
+.specBoxV2 {
+  background: #0d0d0d;
+  padding: 3rem;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-.attribute {
+.specBoxV2 h3 {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ffd700;
+  margin-bottom: 2.5rem;
+}
+
+.attackDetailV2 {
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.attackMetaV2 {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.attackCostV2 {
+  background: #1a1a1a;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  color: #ffd700;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.attackMetaV2 strong {
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.attackDetailV2 p {
+  font-size: 1.1rem;
+  color: #888;
+  line-height: 1.6;
+}
+
+.weaknessRetreatV2 {
+  display: flex;
+  gap: 3rem;
+}
+
+.weaknessRetreatV2 div {
+  display: flex;
+  flex-direction: column;
+}
+
+.weaknessRetreatV2 span {
+  font-size: 0.75rem;
+  color: #444;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.weaknessRetreatV2 strong {
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.attrListV2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.attrItemV2 {
   display: flex;
   justify-content: space-between;
-  padding: 1rem 0;
-  border-bottom: 1px solid #222;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.attribute:last-child {
-  border-bottom: none;
-}
-
-.attribute span {
+.attrItemV2 span {
   color: #666;
 }
 
-.attribute strong {
+.attrItemV2 strong {
   color: #fff;
 }
 
-.guaranteeCard {
-  background: linear-gradient(145deg, #0d0d0d 0%, #151515 100%);
-  padding: 2rem;
-  border-radius: 20px;
-  border: 1px solid #222;
+.protectionGridV2 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-.referencePrice {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-  color: #4da6ff;
-  font-size: 0.85rem;
-  background: rgba(77, 166, 255, 0.1);
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  border: 1px solid rgba(77, 166, 255, 0.2);
-  justify-content: flex-end;
-}
-
-.referencePrice strong {
+.protectItemV2 strong {
+  display: block;
+  font-size: 1rem;
   color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.protectItemV2 p {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 1200px) {
+  .heroContent {
+    grid-template-columns: 350px 1fr;
+  }
+  .heroTitle {
+    font-size: 3.5rem;
+  }
 }
 
 @media (max-width: 900px) {
-  .mainGrid {
+  .heroContent {
     grid-template-columns: 1fr;
+    gap: 3rem;
   }
-  .referencePrice {
-    justify-content: flex-start;
+  .heroInfo {
+    text-align: center;
+  }
+  .heroHeader, .heroMeta, .heroPriceBlock, .heroButtons, .miniTechGrid {
+    justify-content: center;
+    align-items: center;
+  }
+  .chartsGridV2, .specGridV2, .protectionGridV2 {
+    grid-template-columns: 1fr;
   }
 }
