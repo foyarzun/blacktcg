@@ -150,15 +150,35 @@ function DetailContent() {
 
     const fetchCardDetailsFromAPI = async (name: string, number: string) => {
       try {
-        let query = `name:"${name}"`;
-        if (number && number !== "S/N") {
-           query += ` (number:"${number}" OR localId:"${number}")`;
+        // Clean name and number for query
+        const cleanName = name.split(' (')[0].trim();
+        // If number is like "sv03.5-004", try to get the "004" part or just use it as is
+        const cleanNumber = number.includes('-') ? number.split('-').pop() : number;
+        const shortNumber = cleanNumber?.split('/')[0].trim();
+
+        console.log(`Fetching Pokemon API: name="${cleanName}" number="${shortNumber}"`);
+
+        let query = `name:"${cleanName}"`;
+        if (shortNumber && shortNumber !== "S/N") {
+           query += ` (number:"${shortNumber}" OR localId:"${shortNumber}")`;
         }
         
-        const response = await fetch(`https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(query)}&pageSize=1`);
-        if (!response.ok) return null;
-        const result = await response.json();
-        const apiCard = result.data?.[0];
+        let response = await fetch(`https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(query)}&pageSize=5`);
+        if (!response.ok) throw new Error("API call failed");
+        
+        let result = await response.json();
+        let apiCard = result.data?.[0];
+
+        // If no match with number, try just by name
+        if (!apiCard) {
+           console.log(`No match for ${cleanName} with number ${shortNumber}, trying name only...`);
+           const response2 = await fetch(`https://api.pokemontcg.io/v2/cards?q=name:"${cleanName}"&pageSize=5`);
+           if (response2.ok) {
+              const res2 = await response2.json();
+              apiCard = res2.data?.[0];
+           }
+        }
+
         if (apiCard) {
            const firstAttack = apiCard.attacks?.[0];
            const energyCost = firstAttack?.cost?.map((c: string) => `[${c[0]}]`).join('') || "";
